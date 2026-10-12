@@ -13,5 +13,5 @@ Controllo finale. $ARGUMENTS
    - incertezze a non più di 2 cifre significative, unità presenti;
    - misure escluse (`#!`) dichiarate nel testo con il motivo;
    - nessun riferimento a Python o ai file del progetto;
-   - tono e contenuto secondo `CLAUDE.md`.
+   - tono e contenuto secondo `.claude/CLAUDE.md`.
 3. Correggi ciò che puoi; elenca ciò che richiede una decisione dell'utente.

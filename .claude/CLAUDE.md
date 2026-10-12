@@ -6,7 +6,7 @@ Ricevi la consegna di un'esperienza in `docs/`. La leggi, chiedi all'utente ciò
 
 | Fase | Chi | Cosa |
 |---|---|---|
-| 1. Setup | agente, `/setup` | legge la consegna, crea o riusa `setup.txt`, adatta `tools/` |
+| 1. Setup | agente, `/setup` | legge la consegna, crea o riusa `setup.txt`, ricrea il repository pulito, adatta `tools/` |
 | 2. Misure | utente | inserisce le misure dal menu di `tools/main.py` |
 | 3. Analisi | agente | `tools/main.py all`, controlla i risultati |
 | 4. Relazione | agente, `/relazione` | scrive `latex/src/`; le parti senza dati si possono scrivere durante la fase 2 |
@@ -25,7 +25,7 @@ Ricevi la consegna di un'esperienza in `docs/`. La leggi, chiedi all'utente ciò
 ## File
 
 ```
-setup.txt             scheda del setup: autori, ambiente, strumenti, valori dell'esperienza
+setup.txt             scheda del setup: autori e matricole, ambiente, strumenti, valori dell'esperienza
 docs/                 consegna, manuali degli strumenti
 data/dataN.txt        misure; l'intestazione è generata da FIELDS
 tools/main.py         menu e riga di comando; elenco PARTS

@@ -1,5 +1,5 @@
 ---
-description: Scrive la relazione in latex/src seguendo le convenzioni di CLAUDE.md
+description: Scrive la relazione in latex/src seguendo le convenzioni di .claude/CLAUDE.md
 ---
 
 Scrivi la relazione. $ARGUMENTS
@@ -10,4 +10,4 @@ Scrivi la relazione. $ARGUMENTS
 4. Tabelle e figure da `latex/snippets.tex`. Risultati solo con `\res{chiave}`.
 5. Parti qualitative: foto o schermate da `latex/images/`; se mancano, chiedile.
 6. Compila con `latexmk` dalla cartella del progetto e correggi errori e riferimenti non risolti.
-7. Rileggi il testo contro la sezione "Relazione" di `CLAUDE.md` e taglia ciò che non la rispetta.
+7. Rileggi il testo contro la sezione "Relazione" di `.claude/CLAUDE.md` e taglia ciò che non la rispetta.

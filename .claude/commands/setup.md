@@ -19,7 +19,7 @@ Riassumi in poche righe: obiettivo, parti, e per ogni parte cosa si misura, cosa
 
 In tutti i casi chiedi, in un solo messaggio, solo ciò che manca o che questa esperienza cambia:
 
-- blocchi stabili (di norma già presenti): corso, autori, ambiente Python, strumenti con marca, modello e specifiche di incertezza dal manuale;
+- blocchi stabili (di norma già presenti): corso, autori con le rispettive matricole, ambiente Python, strumenti con marca, modello e specifiche di incertezza dal manuale;
 - blocco `ESPERIENZA` (sempre da aggiornare): titolo, data, grandezze preliminari misurate, valori di riferimento, scelte di procedura che la consegna lascia aperte;
 - strumenti usati in questa esperienza e non ancora in elenco.
 
@@ -35,12 +35,14 @@ CORSO
   nome            ...
   anno            ...
 
-AUTORI
-  Nome Cognome              matricola
+AUTORI                                  uno per riga, con matricola
+  Nome Cognome              1234567
+  Nome Cognome              7654321
 
 AMBIENTE
-  python          conda env "NOME"      mai il Python di sistema
-  analisi         conda run -n NOME python tools/main.py all
+  python          venv .venv            oppure: conda env "NOME". Mai il Python di sistema
+  attivazione     source .venv/bin/activate
+  analisi         python tools/main.py all
   relazione       latexmk               PDF in latex/build/main.pdf
 
 STRUMENTI
@@ -63,19 +65,26 @@ ESPERIENZA
 
 Dopo averlo creato, proponi all'utente di tenerne una copia in `../setup.txt` per le prossime esperienze del corso.
 
-## 3. Adattamento
+## 3. Repository pulito
+
+La cartella è una copia del template e ne porta la storia git. Al **primo** setup dell'esperienza va sostituita con una storia nuova:
+
+- se `git log` non contiene alcun commit il cui messaggio inizia con `Setup:`, cancella `.git`, esegui `git init -b main` e, a fine setup, fai il primo commit con messaggio `Setup: <titolo dell'esperienza>`;
+- se un commit `Setup:` esiste già, la storia è dell'esperienza: **non toccarla**.
+
+## 4. Adattamento
 
 Da `setup.txt` e dalla consegna:
 
 - `tools/instruments.py`: una funzione per ogni strumento e grandezza usati;
 - `tools/config.py`: grandezze preliminari e riferimenti;
 - `tools/partN.py`: uno per parte, con `FIELDS` e `analyze()`; aggiorna `PARTS` in `main.py`;
-- `latex/main.tex`: titolo, data, autori.
+- `latex/main.tex`: titolo, data, autori nella forma `Nome Cognome (matricola)`.
 
-## 4. Verifica
+## 5. Verifica
 
 Con dati di prova controlla che l'analisi giri senza errori nell'ambiente indicato, poi rimuovi i dati di prova e i risultati generati.
 
-## 5. Consegna all'utente
+## 6. Consegna all'utente
 
 L'elenco delle grandezze da misurare per parte, nell'ordine in cui il menu le chiede, con quanti punti servono e dove.
