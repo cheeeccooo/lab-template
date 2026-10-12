@@ -3,7 +3,9 @@ Parte 1 — ESEMPIO DA SOSTITUIRE: legge lineare y = a + b·x.
 
 Ogni parte dell'esperienza è un file come questo, con:
   TITLE   : titolo breve
-  DATA    : file in data/ (None se la parte è solo qualitativa)
+  DATA    : file in data/ riempito dal menu di inserimento; None se la parte è
+            solo qualitativa o se legge file salvati da uno strumento
+            (in quel caso: lab.load_table('nomefile.csv') dentro analyze)
   FIELDS  : grandezze misurate, nell'ordine delle colonne
   analyze : calcoli, confronti (lab.report) e grafici (lab.savefig)
 e va aggiunta a PARTS in main.py.

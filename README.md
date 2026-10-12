@@ -39,7 +39,7 @@ A ogni nuovo terminale va riattivato l'ambiente: `source .venv/bin/activate` opp
 
 | Passo | Cosa fai | Cosa succede |
 |---|---|---|
-| `/setup` | rispondi alle domande | l'agente legge la consegna, crea o riusa `setup.txt`, ricrea il repository git pulito, adatta `tools/` e ti dice cosa misurare |
+| `/setup` | rispondi alle domande | l'agente legge la consegna, crea o riusa `setup.txt`, propone i valori di progetto se la consegna li chiede, ricrea il repository git pulito, adatta `tools/` e ti dice cosa misurare |
 | misure | inserisci i valori dal menu | le incertezze si calcolano dalle specifiche degli strumenti e le righe finiscono in `data/` |
 | `/relazione` | — | introduzione, apparato e metodi si possono scrivere mentre misuri; il resto dopo i dati |
 | `/chiudi` | decidi sui punti aperti | controllo finale di numeri, segnaposto e stile |
@@ -52,12 +52,12 @@ Dalla cartella dell'esperienza:
 source .venv/bin/activate     # oppure: conda activate lab
 python tools/main.py          # menu: inserimento misure e analisi con grafici a schermo
 python tools/main.py all      # tutte le analisi, senza finestre
-latexmk                       # compila la relazione -> latex/build/main.pdf
+latexmk                       # compila la relazione -> latex/build/<nome>.pdf
 ```
 
 ## setup.txt
 
-Scheda del setup, creata da `/setup` la prima volta: corso, autori con matricola, ambiente Python, strumenti con modello e specifiche di incertezza, e i valori dell'esperienza (titolo, data, grandezze preliminari, riferimenti).
+Scheda del setup, creata da `/setup` la prima volta: corso, autori con matricola, ambiente Python, strumenti con modello e specifiche di incertezza, regole per la relazione (struttura, richieste del docente, nome del PDF) e i valori dell'esperienza (titolo, data, progetto, grandezze preliminari, riferimenti).
 
 - Se esiste, `/setup` non rifà le domande: chiede solo ciò che manca o che l'esperienza cambia.
 - È la fonte dei valori: se qualcosa cambia, si corregge lì e si rilancia `/setup`.
@@ -77,7 +77,8 @@ latex/           relazione: main.tex, styles.tex, src/, plots/, images/, snippet
 
 ## Dati
 
-- Un file per parte, colonne separate da TAB, intestazione generata dall'analisi.
+- Misure inserite a mano: un file per parte, colonne separate da TAB, intestazione generata dall'analisi.
+- File salvati dagli strumenti (CSV dell'oscilloscopio, acquisizioni): si mettono in `data/` così come sono.
 - Le misure non si correggono. Per escluderne una: `#!` a inizio riga e il motivo in fondo. Resta nel grafico come punto vuoto.
 
 ## Risultati nella relazione

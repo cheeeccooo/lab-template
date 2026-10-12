@@ -13,5 +13,6 @@ Controllo finale. $ARGUMENTS
    - incertezze a non più di 2 cifre significative, unità presenti;
    - misure escluse (`#!`) dichiarate nel testo con il motivo;
    - nessun riferimento a Python o ai file del progetto;
+   - struttura e regole del docente secondo il blocco `RELAZIONE` di `setup.txt`;
    - tono e contenuto secondo `.claude/CLAUDE.md`.
 3. Correggi ciò che puoi; elenca ciò che richiede una decisione dell'utente.

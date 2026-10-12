@@ -6,7 +6,7 @@ Ricevi la consegna di un'esperienza in `docs/`. La leggi, chiedi all'utente ciò
 
 | Fase | Chi | Cosa |
 |---|---|---|
-| 1. Setup | agente, `/setup` | legge la consegna, crea o riusa `setup.txt`, ricrea il repository pulito, adatta `tools/` |
+| 1. Setup | agente, `/setup` | legge la consegna, crea o riusa `setup.txt`, propone il progetto se richiesto, ricrea il repository pulito, adatta `tools/` |
 | 2. Misure | utente | inserisce le misure dal menu di `tools/main.py` |
 | 3. Analisi | agente | `tools/main.py all`, controlla i risultati |
 | 4. Relazione | agente, `/relazione` | scrive `latex/src/`; le parti senza dati si possono scrivere durante la fase 2 |
@@ -27,7 +27,8 @@ Ricevi la consegna di un'esperienza in `docs/`. La leggi, chiedi all'utente ciò
 ```
 setup.txt             scheda del setup: autori e matricole, ambiente, strumenti, valori dell'esperienza
 docs/                 consegna, manuali degli strumenti
-data/dataN.txt        misure; l'intestazione è generata da FIELDS
+data/dataN.txt        misure inserite a mano; l'intestazione è generata da FIELDS
+data/*.csv            file salvati dagli strumenti, letti con lab.load_table
 tools/main.py         menu e riga di comando; elenco PARTS
 tools/partN.py        una parte: TITLE, DATA, FIELDS, analyze()
 tools/instruments.py  incertezze degli strumenti usati
@@ -43,9 +44,11 @@ latex/snippets.tex    schemi di tabelle e figure da copiare
 - Se serve una funzione generale che manca, aggiungila a `lab.py`.
 - `setup.txt` è la fonte: `instruments.py`, `config.py` e `main.tex` devono coincidere con esso. Se un valore cambia, aggiorna prima `setup.txt`.
 - Dipendenze in `requirements.txt`.
-- Compilazione: `latexmk` dalla cartella del progetto (PDF in `latex/build/main.pdf`).
+- Compilazione: `latexmk` dalla cartella del progetto. Il PDF esce in `latex/build/` con il nome della riga `pdf` di `setup.txt` (default `main.pdf`).
 
 ## Relazione
+
+Le regole del docente nel blocco `RELAZIONE` di `setup.txt` prevalgono su quelle qui sotto.
 
 **Tono**
 - Essenziale e concisa: il verbale di ciò che si è fatto e trovato.
@@ -65,6 +68,7 @@ latex/snippets.tex    schemi di tabelle e figure da copiare
 - Unità sempre indicate, con `siunitx`.
 - Le tabelle delle misure riportano i valori di `data/`.
 
-**Struttura**
-- Sei sezioni: introduzione, apparato, metodi, misure, analisi dati, conclusioni. L'analisi è divisa per parte.
+**Struttura** (scelta in `setup.txt`)
+- `sezioni`: introduzione, apparato, metodi, misure, analisi dati, conclusioni; l'analisi è divisa per parte. File in `latex/src/`.
+- `per parte`: una sezione per parte con circuito e procedura, misure, risultati; niente introduzione teorica. Modello in `latex/src/_parte.tex`; i file delle sei sezioni si tolgono.
 - Una sezione o un paragrafo senza contenuto si toglie.

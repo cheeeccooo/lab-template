@@ -5,7 +5,7 @@ description: Scrive la relazione in latex/src seguendo le convenzioni di .claude
 Scrivi la relazione. $ARGUMENTS
 
 1. Controlla quali parti hanno già misure in `data/` e risultati in `results.txt`.
-2. **Senza dati** si scrivono: introduzione, apparato, metodi.
+2. **Senza dati** si scrivono le parti che non dipendono dalle misure: introduzione, apparato e metodi, oppure circuito e procedura di ogni parte, secondo la struttura in `setup.txt`.
 3. **Con i dati**: esegui l'analisi (`tools/main.py all` nell'ambiente di `setup.txt`), poi scrivi misure, analisi, conclusioni e abstract. Le parti ancora senza dati restano vuote: dillo all'utente.
 4. Tabelle e figure da `latex/snippets.tex`. Risultati solo con `\res{chiave}`.
 5. Parti qualitative: foto o schermate da `latex/images/`; se mancano, chiedile.

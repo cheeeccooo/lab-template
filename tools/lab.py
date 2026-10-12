@@ -127,6 +127,39 @@ def load(filename, fields, sort=None, excluded=False):
     return out
 
 
+def load_table(filename, usecols=None, delimiter=None):
+    """Legge un file grezzo di uno strumento (CSV dell'oscilloscopio, acquisizione...)
+    da data/<filename>. Restituisce un array 2D con le sole righe numeriche:
+    intestazioni e righe di testo vengono saltate.
+
+    usecols   : indici delle colonne da tenere (None = tutte)
+    delimiter : separatore (None = riconosciuto tra ',' ';' TAB e spazi)
+    """
+    path = os.path.join(DATA_DIR, filename)
+    if not os.path.isfile(path):
+        raise LabError(f"{filename} non esiste.")
+    rows = []
+    with open(path, errors='replace') as f:
+        for line in f:
+            s = line.strip()
+            if not s:
+                continue
+            sep = delimiter or next((d for d in (';', '\t', ',') if d in s), None)
+            tokens = [t.strip() for t in (s.split(sep) if sep else s.split())]
+            if usecols is not None:
+                if max(usecols) >= len(tokens):
+                    continue
+                tokens = [tokens[i] for i in usecols]
+            try:
+                rows.append([float(t) for t in tokens])
+            except ValueError:
+                continue
+    if not rows:
+        raise LabError(f"{filename}: nessuna riga numerica.")
+    n = len(rows[0])
+    return np.array([r for r in rows if len(r) == n])
+
+
 def insert(filename, fields):
     """Inserimento interattivo: chiede i valori, calcola le incertezze, aggiunge la riga."""
     def ask(text):
