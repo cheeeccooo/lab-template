@@ -1,7 +1,7 @@
 """
 Entry point.
 
-Da eseguire nell'ambiente Python di setup.txt, mai con quello di sistema.
+Da eseguire nell'ambiente Python di setup.yaml, mai con quello di sistema.
 
   python tools/main.py          menu interattivo (inserimento dati, analisi con grafici a schermo)
   python tools/main.py all      tutte le analisi, senza finestre

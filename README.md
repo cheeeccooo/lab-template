@@ -32,14 +32,14 @@ A ogni nuovo terminale va riattivato l'ambiente: `source .venv/bin/activate` opp
 
 1. Copia questa cartella e rinominala.
 2. Metti la consegna e i manuali degli strumenti in `docs/`.
-3. Se hai già un `setup.txt` di un'esperienza precedente, mettilo nella cartella superiore (`../setup.txt`).
+3. Se hai già un `setup.yaml` di un'esperienza precedente, mettilo nella cartella superiore (`../setup.yaml`).
 4. Apri l'agente nella cartella e lancia `/setup`.
 
 ## Flusso
 
 | Passo | Cosa fai | Cosa succede |
 |---|---|---|
-| `/setup` | rispondi alle domande | l'agente legge la consegna, crea o riusa `setup.txt`, propone i valori di progetto se la consegna li chiede, ricrea il repository git pulito, adatta `tools/` e ti dice cosa misurare |
+| `/setup` | rispondi alle domande | l'agente legge la consegna, crea o riusa `setup.yaml`, propone i valori di progetto se la consegna li chiede, ricrea il repository git pulito, adatta `tools/` e ti dice cosa misurare |
 | misure | inserisci i valori dal menu | le incertezze si calcolano dalle specifiche degli strumenti e le righe finiscono in `data/` |
 | `/relazione` | — | introduzione, apparato e metodi si possono scrivere mentre misuri; il resto dopo i dati |
 | `/chiudi` | decidi sui punti aperti | controllo finale di numeri, segnaposto e stile |
@@ -55,18 +55,33 @@ python tools/main.py all      # tutte le analisi, senza finestre
 latexmk                       # compila la relazione -> latex/build/<nome>.pdf
 ```
 
-## setup.txt
+## setup.yaml
 
-Scheda del setup, creata da `/setup` la prima volta: corso, autori con matricola, ambiente Python, strumenti con modello e specifiche di incertezza, regole per la relazione (struttura, richieste del docente, nome del PDF) e i valori dell'esperienza (titolo, data, progetto, grandezze preliminari, riferimenti).
+Scheda breve in YAML, creata da `/setup` la prima volta e pensata per essere modificata a mano: corso, autori con matricola, ambiente Python, preferenze, struttura e nome del PDF della relazione, titolo e data dell'esperienza, strumenti con le specifiche di incertezza.
+
+```yaml
+autori:
+  - Nome Cognome, 1234567
+python: conda activate lab
+preferenze:
+  - relazione senza teoria
+  - circuiti disegnati con circuitikz
+relazione:
+  struttura: per parte
+  pdf: Mar12_E1
+```
+
+`preferenze` è il posto per ogni indicazione stabile su come lavorare (richieste del docente, scelte di stile, pacchetti da usare): l'agente le applica a ogni passo.
 
 - Se esiste, `/setup` non rifà le domande: chiede solo ciò che manca o che l'esperienza cambia.
-- È la fonte dei valori: se qualcosa cambia, si corregge lì e si rilancia `/setup`.
+- Se qualcosa cambia, si corregge lì e si rilancia `/setup`.
+- I valori della singola esperienza (componenti misurati, riferimenti) non stanno qui ma in `tools/config.py`.
 - Una copia nella cartella superiore evita di ripetere autori e strumenti a ogni esperienza.
 
 ## Cartelle
 
 ```
-setup.txt        scheda del setup
+setup.yaml       scheda del setup
 docs/            consegna e manuali (non versionati)
 data/            misure, un file per parte
 tools/           analisi: main.py, una partN.py per parte, instruments.py, config.py, lab.py

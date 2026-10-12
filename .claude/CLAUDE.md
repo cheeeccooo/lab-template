@@ -6,7 +6,7 @@ Ricevi la consegna di un'esperienza in `docs/`. La leggi, chiedi all'utente ciò
 
 | Fase | Chi | Cosa |
 |---|---|---|
-| 1. Setup | agente, `/setup` | legge la consegna, crea o riusa `setup.txt`, propone il progetto se richiesto, ricrea il repository pulito, adatta `tools/` |
+| 1. Setup | agente, `/setup` | legge la consegna, crea o riusa `setup.yaml`, propone il progetto se richiesto, ricrea il repository pulito, adatta `tools/` |
 | 2. Misure | utente | inserisce le misure dal menu di `tools/main.py` |
 | 3. Analisi | agente | `tools/main.py all`, controlla i risultati |
 | 4. Relazione | agente, `/relazione` | scrive `latex/src/`; le parti senza dati si possono scrivere durante la fase 2 |
@@ -19,20 +19,21 @@ Ricevi la consegna di un'esperienza in `docs/`. La leggi, chiedi all'utente ciò
 - **Non inventare nulla**: né misure, né specifiche degli strumenti, né valori di riferimento. Se manca un dato, chiedilo.
 - **Le misure non si modificano.** Una misura sbagliata si esclude con `#!` a inizio riga e il motivo in fondo; resta nel grafico come punto vuoto e va dichiarata nella relazione.
 - **Le incertezze vengono dal manuale dello strumento** (marca e modello esatti), non da percentuali stimate. Una stima a occhio va dichiarata come tale.
-- **Mai il Python di sistema.** Usa l'ambiente indicato in `setup.txt` (blocco `AMBIENTE`); se manca un pacchetto, installalo lì.
+- **Mai il Python di sistema.** Usa l'ambiente indicato in `setup.yaml` (voce `python`); se manca un pacchetto, installalo lì.
+- **Le `preferenze` di `setup.yaml` valgono sempre**, anche contro le convenzioni di questo file.
 - **Adatta tutto all'esperienza.** Numero di parti, colonne, formule, grafici e struttura della relazione seguono la consegna, non il template.
 
 ## File
 
 ```
-setup.txt             scheda del setup: autori e matricole, ambiente, strumenti, valori dell'esperienza
+setup.yaml            scheda del setup: corso, autori, ambiente, preferenze, strumenti
 docs/                 consegna, manuali degli strumenti
 data/dataN.txt        misure inserite a mano; l'intestazione è generata da FIELDS
 data/*.csv            file salvati dagli strumenti, letti con lab.load_table
 tools/main.py         menu e riga di comando; elenco PARTS
 tools/partN.py        una parte: TITLE, DATA, FIELDS, analyze()
 tools/instruments.py  incertezze degli strumenti usati
-tools/config.py       grandezze preliminari e valori di riferimento
+tools/config.py       valori dell'esperienza: grandezze preliminari, progetto, riferimenti
 tools/lab.py          libreria condivisa: non dipende dall'esperienza
 results.txt           risultati leggibili, aggiornati a ogni analisi
 latex/results.tex     gli stessi risultati come \res{chiave}
@@ -42,13 +43,13 @@ latex/snippets.tex    schemi di tabelle e figure da copiare
 
 - `part1.py` è un esempio: sostituiscilo. Una parte solo qualitativa ha `DATA = None`.
 - Se serve una funzione generale che manca, aggiungila a `lab.py`.
-- `setup.txt` è la fonte: `instruments.py`, `config.py` e `main.tex` devono coincidere con esso. Se un valore cambia, aggiorna prima `setup.txt`.
+- `setup.yaml` è la fonte per autori, titolo, data e specifiche degli strumenti: `instruments.py` e `main.tex` devono coincidere con esso.
 - Dipendenze in `requirements.txt`.
-- Compilazione: `latexmk` dalla cartella del progetto. Il PDF esce in `latex/build/` con il nome della riga `pdf` di `setup.txt` (default `main.pdf`).
+- Compilazione: `latexmk` dalla cartella del progetto. Il PDF esce in `latex/build/` con il nome della voce `pdf` di `setup.yaml` (default `main.pdf`).
 
 ## Relazione
 
-Le regole del docente nel blocco `RELAZIONE` di `setup.txt` prevalgono su quelle qui sotto.
+Le `preferenze` di `setup.yaml` prevalgono su quanto segue.
 
 **Tono**
 - Essenziale e concisa: il verbale di ciò che si è fatto e trovato.
@@ -68,7 +69,7 @@ Le regole del docente nel blocco `RELAZIONE` di `setup.txt` prevalgono su quelle
 - Unità sempre indicate, con `siunitx`.
 - Le tabelle delle misure riportano i valori di `data/`.
 
-**Struttura** (scelta in `setup.txt`)
+**Struttura** (scelta in `setup.yaml`)
 - `sezioni`: introduzione, apparato, metodi, misure, analisi dati, conclusioni; l'analisi è divisa per parte. File in `latex/src/`.
 - `per parte`: una sezione per parte con circuito e procedura, misure, risultati; niente introduzione teorica. Modello in `latex/src/_parte.tex`; i file delle sei sezioni si tolgono.
 - Una sezione o un paragrafo senza contenuto si toglie.
