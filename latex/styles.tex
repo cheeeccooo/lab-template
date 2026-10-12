@@ -1,0 +1,67 @@
+                            %——— SETUP ———%
+%%%≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠%
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage[italian]{babel}
+%\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}   % bibliografia: togliere il commento qui, sotto e in main.tex
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{changepage}
+\usepackage{csquotes}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{siunitx}
+\usepackage{subcaption}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{verbatim}
+
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\hfuzz=20pt % Ignora i warning "overfull" se l'errore è inferiore a 20pt (~7mm)
+
+%——— biblatex ———%
+%\addbibresource{references.bib}
+
+%——— enumitem ———%
+\setlist[itemize]{
+  itemsep=2pt,
+  parsep=0pt,
+  topsep=3pt,
+  leftmargin=5mm
+}
+
+\setlist[enumerate]{
+  itemsep=2pt,
+  parsep=0pt,
+  topsep=3pt,
+  leftmargin=7mm
+}
+
+%——— geometry ———%
+\geometry{margin=2.5cm}
+
+%——— caption - subcaption ———%
+\captionsetup[table]{position=bottom}
+
+
+%——— titlesec ———%
+\titleformat{\paragraph}[runin]     % "run-in" (titolo sulla stessa riga del testo)
+  {\normalfont\itshape}             % stile: corsivo, no grassetto
+  {}                                % niente etichetta/numero
+  {}                           % spazio tra titolo e testo
+  {}                                % codice prima del titolo
+  [.]                                % codice dopo il titolo (es. puoi mettere ":")
+
+\titlespacing*{\paragraph}{0.5em}{1ex plus 0.25ex}{1em}   % Spaziatura: poco spazio prima, 0.5em dopo il titolo
+
+%——— risultati dell'analisi ———%
+% results.tex è generato dall'analisi: \res{chiave} = valore ± incertezza,
+% \res{chiave:ref} = valore atteso, \res{chiave:z} = Z-test.
+\newcommand{\resdef}[2]{\expandafter\gdef\csname res@#1\endcsname{#2}}
+\newcommand{\res}[1]{\ifcsname res@#1\endcsname\ensuremath{\csname res@#1\endcsname}\else\textbf{[#1?]}\fi}
+\InputIfFileExists{results.tex}{}{}

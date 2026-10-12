@@ -1,0 +1,6 @@
+.DS_Store
+__pycache__/
+.venv/
+latex/build/
+docs/*
+!docs/.gitkeep

@@ -1,0 +1,71 @@
+% Schemi pronti da copiare negli src/. Questo file NON viene compilato.
+
+% ——— Tabella di misure ———
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{ccc}
+        \toprule
+        $x$ (u.m.) & $y$ (u.m.) & $\sigma_y$ (u.m.) \\
+        \midrule
+        1.0 & 2.0 & 0.1 \\
+        \bottomrule
+    \end{tabular}
+    \caption{CAPTION}
+    \label{tab:misure1}
+\end{table}
+
+% ——— Tabella di confronto con Z-test (numeri da results.tex) ———
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{lcccc}
+        \toprule
+        Grandezza & Misurato & Atteso & $Z$ & Esito \\
+        \midrule
+        $b$ (u.m.) & \res{p1b} & \res{p1b:ref} & \res{p1b:z} & compatibile \\
+        \bottomrule
+    \end{tabular}
+    \caption{CAPTION}
+    \label{tab:risultati1}
+\end{table}
+
+% ——— Risultato nel testo ———
+Si ottiene $b = (\res{p1b})$~u.m.
+
+% ——— Risultati finali in riga (conclusioni) ———
+\[
+\begin{aligned}
+  &b = (\res{p1b})\ \text{u.m.} && Z = \res{p1b:z}
+\end{aligned}
+\]
+
+% ——— Grafico singolo ———
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{plots/part1.png}
+    \caption{CAPTION}
+    \label{plt:part1}
+\end{figure}
+
+% ——— Due grafici o foto affiancati ———
+\begin{figure}[!htbp]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\linewidth]{plots/part1.png}
+        \caption{CAPTION}
+        \label{plt:a}
+    \end{subfigure}\hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\linewidth]{plots/part2.png}
+        \caption{CAPTION}
+        \label{plt:b}
+    \end{subfigure}
+    \caption{CAPTION}
+\end{figure}
+
+% ——— Pagina di soli grafici a margini ridotti ———
+\clearpage
+\thispagestyle{empty}
+\newgeometry{top=1cm, bottom=0.5cm, left=0.5cm, right=0.5cm}
+% ... figure ...
+\restoregeometry
+\clearpage
