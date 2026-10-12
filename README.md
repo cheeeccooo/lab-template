@@ -10,13 +10,23 @@ Punto di partenza per un'esperienza di laboratorio di fisica: analisi dati in Py
 
 ## Installazione
 
+Una volta sola. Con `venv`, dalla cartella dell'esperienza:
+
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Con conda: `conda create -n lab python` e poi `pip install -r requirements.txt` nell'ambiente attivo.
+Con conda, un ambiente riusabile per tutte le esperienze:
+
+```sh
+conda create -n lab python
+conda activate lab
+pip install -r requirements.txt
+```
+
+A ogni nuovo terminale va riattivato l'ambiente: `source .venv/bin/activate` oppure `conda activate lab`.
 
 ## Nuova esperienza
 
@@ -36,9 +46,10 @@ Con conda: `conda create -n lab python` e poi `pip install -r requirements.txt` 
 
 ## Comandi da terminale
 
-Dalla cartella dell'esperienza, con l'ambiente attivo:
+Dalla cartella dell'esperienza:
 
 ```sh
+source .venv/bin/activate     # oppure: conda activate lab
 python tools/main.py          # menu: inserimento misure e analisi con grafici a schermo
 python tools/main.py all      # tutte le analisi, senza finestre
 latexmk                       # compila la relazione -> latex/build/main.pdf
