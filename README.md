@@ -39,8 +39,8 @@ A ogni nuovo terminale va riattivato l'ambiente: `source .venv/bin/activate` opp
 
 | Passo | Cosa fai | Cosa succede |
 |---|---|---|
-| `/setup` | rispondi alle domande | l'agente legge la consegna, crea o riusa `setup.yaml`, propone i valori di progetto se la consegna li chiede, ricrea il repository git pulito, adatta `tools/` e ti dice cosa misurare |
-| misure | inserisci i valori dal menu | le incertezze si calcolano dalle specifiche degli strumenti e le righe finiscono in `data/` |
+| `/setup` | rispondi alle domande e approvi il piano | l'agente legge la consegna, crea o riusa `setup.yaml`, ti fa approvare cosa misurare, calcolare e graficare, adatta `tools/` e scrive `procedura.md` |
+| misure | segui `procedura.md` e inserisci dal menu | prima i valori del banco, poi una parte alla volta, con l'analisi subito dopo ogni parte |
 | `/relazione` | — | introduzione, apparato e metodi si possono scrivere mentre misuri; il resto dopo i dati |
 | `/chiudi` | decidi sui punti aperti | controllo finale di numeri, segnaposto e stile |
 
@@ -50,7 +50,7 @@ Dalla cartella dell'esperienza:
 
 ```sh
 source .venv/bin/activate     # oppure: conda activate lab
-python tools/main.py          # menu: inserimento misure e analisi con grafici a schermo
+python tools/main.py          # menu: valori del banco, misure, annulla ultima misura, analisi
 python tools/main.py all      # tutte le analisi, senza finestre
 latexmk                       # compila la relazione -> latex/build/<nome>.pdf
 ```
@@ -82,6 +82,7 @@ relazione:
 
 ```
 setup.yaml       scheda del setup
+procedura.md     scaletta da seguire al banco, scritta da /setup
 docs/            consegna e manuali (non versionati)
 data/            misure, un file per parte
 tools/           analisi: main.py, una partN.py per parte, instruments.py, config.py, lab.py
@@ -92,7 +93,8 @@ latex/           relazione: main.tex, styles.tex, src/, plots/, images/, snippet
 
 ## Dati
 
-- Misure inserite a mano: un file per parte, colonne separate da TAB, intestazione generata dall'analisi.
+- Misure inserite a mano: un file per parte, colonne separate da TAB. Il file contiene solo le letture e i loro parametri (per esempio la scala); le incertezze si calcolano a ogni analisi dalle specifiche degli strumenti.
+- Un errore di battitura si annulla dal menu (`u` toglie l'ultima riga).
 - File salvati dagli strumenti (CSV dell'oscilloscopio, acquisizioni): si mettono in `data/` così come sono.
 - Le misure non si correggono. Per escluderne una: `#!` a inizio riga e il motivo in fondo. Resta nel grafico come punto vuoto.
 

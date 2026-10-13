@@ -6,20 +6,20 @@ Ricevi la consegna di un'esperienza in `docs/`. La leggi, chiedi all'utente ciò
 
 | Fase | Chi | Cosa |
 |---|---|---|
-| 1. Setup | agente, `/setup` | legge la consegna, crea o riusa `setup.yaml`, propone il progetto se richiesto, ricrea il repository pulito, adatta `tools/` |
-| 2. Misure | utente | inserisce le misure dal menu di `tools/main.py` |
-| 3. Analisi | agente | `tools/main.py all`, controlla i risultati |
+| 1. Setup | agente, `/setup` | legge la consegna, crea o riusa `setup.yaml`, fa approvare il piano, adatta `tools/`, scrive `procedura.md` |
+| 2. Misure | utente | segue `procedura.md` e inserisce dal menu di `tools/main.py`: valori del banco, poi una parte alla volta |
+| 3. Analisi | agente o utente | subito dopo le misure di ogni parte, quando un punto si può ancora rifare |
 | 4. Relazione | agente, `/relazione` | scrive `latex/src/`; le parti senza dati si possono scrivere durante la fase 2 |
 | 5. Chiusura | agente, `/chiudi` | compila e verifica |
 
 ## Regole
 
 - **In dubbio, chiedi.** Non improvvisare su procedura, strumenti o valori.
-- **Fai il minimo che serve**, nel modo più diretto.
+- **Fai ciò che la consegna chiede, non di più.** Fit, parametri, test e grafici che la consegna non chiede si propongono all'utente, non si aggiungono.
 - **Non inventare nulla**: né misure, né specifiche degli strumenti, né valori di riferimento. Se manca un dato, chiedilo.
 - **Le misure non si modificano.** Una misura sbagliata si esclude con `#!` a inizio riga e il motivo in fondo; resta nel grafico come punto vuoto e va dichiarata nella relazione.
-- **Le incertezze vengono dal manuale dello strumento** (marca e modello esatti), non da percentuali stimate. Una stima a occhio va dichiarata come tale.
-- **Mai il Python di sistema.** Usa l'ambiente indicato in `setup.yaml` (voce `python`); se manca un pacchetto, installalo lì.
+- **Le incertezze vengono dal manuale dello strumento** (marca e modello esatti): il limite dichiarato si usa come σ. Una stima a occhio va dichiarata come tale. Le σ non si ritoccano dopo aver visto un risultato; il χ² si riporta solo se richiesto.
+- **Mai il Python di sistema.** Usa l'interprete dell'ambiente indicato in `setup.yaml` (voce `python`); se manca un pacchetto, installalo lì.
 - **Le `preferenze` di `setup.yaml` valgono sempre**, anche contro le convenzioni di questo file.
 - **Adatta tutto all'esperienza.** Numero di parti, colonne, formule, grafici e struttura della relazione seguono la consegna, non il template.
 
@@ -27,8 +27,10 @@ Ricevi la consegna di un'esperienza in `docs/`. La leggi, chiedi all'utente ciò
 
 ```
 setup.yaml            scheda del setup: corso, autori, ambiente, preferenze, strumenti
+procedura.md          scaletta da seguire al banco, scritta da /setup
 docs/                 consegna, manuali degli strumenti
-data/dataN.txt        misure inserite a mano; l'intestazione è generata da FIELDS
+data/banco.txt        valori misurati una volta sola (componenti, impostazioni)
+data/dataN.txt        letture inserite a mano; solo valori e parametri, le incertezze si calcolano al caricamento
 data/*.csv            file salvati dagli strumenti, letti con lab.load_table
 tools/main.py         menu e riga di comando; elenco PARTS
 tools/partN.py        una parte: TITLE, DATA, FIELDS, analyze()
@@ -42,6 +44,7 @@ latex/snippets.tex    schemi di tabelle e figure da copiare
 ```
 
 - `part1.py` è un esempio: sostituiscilo. Una parte solo qualitativa ha `DATA = None`.
+- Le parti in `PARTS` e i campi in `FIELDS` seguono l'ordine in cui si lavora al banco.
 - Se serve una funzione generale che manca, aggiungila a `lab.py`.
 - `setup.yaml` è la fonte per autori, titolo, data e specifiche degli strumenti: `instruments.py` e `main.tex` devono coincidere con esso.
 - Dipendenze in `requirements.txt`.

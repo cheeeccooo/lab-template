@@ -13,6 +13,7 @@ Controllo finale. $ARGUMENTS
    - incertezze a non più di 2 cifre significative, unità presenti;
    - misure escluse (`#!`) dichiarate nel testo con il motivo;
    - ogni elemento o valore scelto dal gruppo è motivato;
+   - nulla che la consegna non chiede e l'utente non ha approvato;
    - nessun riferimento a Python o ai file del progetto;
    - struttura e `preferenze` di `setup.yaml` rispettate;
    - tono e contenuto secondo `.claude/CLAUDE.md`.

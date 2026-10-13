@@ -42,6 +42,7 @@ esperienza:
 strumenti:                      # incertezze dal manuale del modello esatto
   oscilloscopio:
     modello: MARCA MODELLO
+    fonte: docs/FILE.pdf        # oppure titolo e link del documento
     V: 0.28 div
     t: 0.016 div
   multimetro:
@@ -51,6 +52,7 @@ strumenti:                      # incertezze dal manuale del modello esatto
 
 Regole per compilarla:
 
+- Ogni strumento ha la sua `fonte`. Se il manuale non è in `docs/` e prendi le specifiche dalla rete, dillo subito all'utente con il link, prima di usarle.
 - Dentro `strumenti` solo ciò che entra in un conto: specifiche di incertezza e caratteristiche che condizionano le misure (impedenze, bande). Un valore sconosciuto si scrive `TODO`: non inventarlo.
 - `preferenze` raccoglie in forma breve ogni indicazione stabile su come lavorare: richieste del docente sulla relazione, scelte di stile, strumenti da usare (per esempio "circuiti disegnati con circuitikz", "grafici in scala logaritmica"). Scadenze e logistica non ci vanno.
 - I valori dell'esperienza (componenti misurati, riferimenti, scelte di progetto) **non** stanno qui: vanno in `tools/config.py`.
@@ -65,7 +67,17 @@ Chiedi, in un solo messaggio, solo ciò che manca:
 
 Dopo averla creata, proponi di tenerne una copia in `../setup.yaml` per le prossime esperienze del corso.
 
-## 3. Preferenze
+## 3. Piano
+
+Prima di scrivere codice, presenta all'utente per ogni parte, nell'ordine in cui si farà al banco:
+
+- cosa si legge, con quale strumento e in quale forma;
+- cosa si calcola e con cosa si confronta;
+- come sarà il grafico (assi, scale, cosa viene sovrapposto).
+
+Solo ciò che la consegna chiede. Se pensi che serva altro (un fit, un parametro in più), proponilo qui come opzione. Aspetta l'approvazione.
+
+## 3b. Preferenze
 
 Applica ogni riga di `preferenze`. Se una richiede un pacchetto LaTeX o Python, aggiungilo (`latex/styles.tex`, ambiente di `python`) e verifica che la compilazione o l'analisi giri ancora. Se una preferenza contraddice `.claude/CLAUDE.md`, vale la preferenza.
 
@@ -89,8 +101,8 @@ La cartella è una copia del template e ne porta la storia git. Al **primo** set
 ## 6. Adattamento
 
 - `tools/instruments.py`: una funzione per ogni strumento e grandezza usati, dai valori di `strumenti`;
-- `tools/config.py`: grandezze preliminari, valori di progetto, riferimenti;
-- `tools/partN.py`: uno per parte, con `FIELDS` e `analyze()`; aggiorna `PARTS` in `main.py`. Le grandezze salvate su file dallo strumento si leggono con `lab.load_table`;
+- `tools/config.py`: valori di progetto, riferimenti e `BENCH_FIELDS` per le grandezze misurate una volta sola (componenti, impostazioni): le chiede il menu, non si scrivono a mano;
+- `tools/partN.py`: uno per parte, con `FIELDS` e `analyze()`; aggiorna `PARTS` in `main.py`. I nomi dei campi dicono cosa si legge e dove ("resistore in serie al diodo", non "R del diodo"). Le grandezze salvate su file dallo strumento si leggono con `lab.load_table`;
 - `latex/main.tex`: titolo, data, autori nella forma `Nome Cognome (matricola)`;
 - `latex/src/`: la struttura scelta in `relazione` (vedi "Struttura" in `.claude/CLAUDE.md`).
 
@@ -98,6 +110,14 @@ La cartella è una copia del template e ne porta la storia git. Al **primo** set
 
 Con dati di prova controlla che l'analisi giri senza errori nell'ambiente indicato, poi rimuovi i dati di prova e i risultati generati.
 
-## 8. Consegna all'utente
+## 8. procedura.md
 
-L'elenco delle grandezze da misurare per parte, nell'ordine in cui il menu le chiede, con quanti punti servono e dove.
+Scrivi `procedura.md`: la scaletta che l'utente segue al banco, breve, in ordine di esecuzione.
+
+- Prima i valori del banco (voce `b` del menu), poi una sezione per parte.
+- Per ogni parte: cosa montare, come impostare gli strumenti, cosa leggere e dove, l'elenco dei punti da prendere (frequenze, tensioni), nell'ordine in cui il menu li chiede.
+- Le letture si trascrivono con tutte le cifre del display.
+- Uno o due controlli di plausibilità per parte ("se leggi X, controlla Y").
+- A fine parte: lanciare l'analisi di quella parte prima di smontare.
+
+Poi di' all'utente che il setup è pronto e di partire da `procedura.md`.

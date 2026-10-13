@@ -27,6 +27,9 @@ SHOW  = False   # True: apre la finestra del grafico dopo averlo salvato
 Z_MAX = 2.0     # soglia di compatibilità dello Z-test
 
 
+_results = []   # (chiave, testo LaTeX) della parte in esecuzione
+
+
 class LabError(Exception):
     """Errore atteso (file vuoto, colonne sbagliate): si stampa senza traceback."""
 
@@ -36,41 +39,54 @@ class LabError(Exception):
 # =====================================================
 
 class Field:
-    """Una grandezza misurata = una colonna (più la sua incertezza) del file dati.
+    """Una grandezza letta = una colonna del file dati (più, se serve, il suo parametro).
 
     name  : nome della colonna, usato anche come chiave in load()
     unit  : unità di misura
-    sigma : None            -> nessuna colonna di incertezza (es. indice, etichetta)
+    sigma : None            -> nessuna incertezza (es. indice, etichetta, impostazione)
             numero          -> incertezza costante
             f(valore)       -> incertezza calcolata dal valore
-            f(valore, x)    -> come sopra, con un parametro chiesto all'inserimento
+            f(valore, x)    -> come sopra, con un parametro x letto insieme al valore
     ask   : testo con cui chiedere x (es. 'scala verticale [V/div]')
+
+    Nel file si salvano solo le letture e i parametri: l'incertezza si calcola a ogni
+    caricamento, quindi cambiare una funzione di instruments.py aggiorna tutti i dati.
     """
 
     def __init__(self, name, unit='', sigma=None, ask=None):
         self.name, self.unit, self.sigma, self.ask = name, unit, sigma, ask
+
+    def error(self, value, par=None):
+        if self.sigma is None:
+            return None
+        if callable(self.sigma):
+            return float(self.sigma(value, par) if self.ask else self.sigma(value))
+        return float(self.sigma)
 
 
 def _columns(fields):
     cols = []
     for f in fields:
         cols.append(f"{f.name}[{f.unit}]" if f.unit else f.name)
-        if f.sigma is not None:
-            cols.append(f"s_{f.name}")
+        if f.ask:
+            cols.append(f"p_{f.name}")
     return cols
+
+
+def _path(filename):
+    return os.path.join(DATA_DIR, filename)
 
 
 def init_data(filename, fields, title=''):
     """Crea data/<filename> con l'intestazione delle colonne, se non esiste."""
-    path = os.path.join(DATA_DIR, filename)
-    if os.path.exists(path):
+    if os.path.exists(_path(filename)):
         return
     os.makedirs(DATA_DIR, exist_ok=True)
-    with open(path, 'w') as f:
+    with open(_path(filename), 'w') as f:
         if title:
             f.write(f"# {title}\n")
-        f.write("# Colonne separate da TAB. Per escludere una misura: '#!' a inizio riga"
-                " e il motivo in fondo.\n")
+        f.write("# Solo letture, separate da TAB (p_ = parametro della lettura, es. scala)."
+                " Per escludere una misura: '#!' a inizio riga e il motivo in fondo.\n")
         f.write("# " + "\t".join(_columns(fields)) + "\n")
 
 
@@ -90,16 +106,16 @@ def _parse(line, ncols, filename, trailing_text=False):
 def load(filename, fields, sort=None, excluded=False):
     """Legge data/<filename> e restituisce un dizionario nome -> colonna.
 
-    Le colonne con incertezza sono array di ufloat (usare nom() ed err() per i grafici).
+    Le colonne con incertezza sono array di ufloat (usare nom() ed err() per i grafici);
+    il parametro di una lettura è disponibile come 'p_<nome>'.
     sort     : nome del campo su cui ordinare (None = ordine del file)
     excluded : True -> restituisce le righe escluse con '#!' invece di quelle valide
     """
-    path = os.path.join(DATA_DIR, filename)
-    if not os.path.isfile(path):
+    if not os.path.isfile(_path(filename)):
         raise LabError(f"{filename} non esiste.")
     ncols = len(_columns(fields))
     rows = []
-    with open(path) as f:
+    with open(_path(filename)) as f:
         for line in f:
             s = line.strip()
             if not s:
@@ -115,16 +131,24 @@ def load(filename, fields, sort=None, excluded=False):
 
     out, i = {}, 0
     for f in fields:
+        v = arr[:, i]
+        p = arr[:, i + 1] if f.ask else [None] * len(v)
+        i += 2 if f.ask else 1
+        if f.ask:
+            out[f"p_{f.name}"] = np.array(p)
         if f.sigma is None:
-            out[f.name] = arr[:, i]
-            i += 1
+            out[f.name] = v
         else:
-            out[f.name] = unp.uarray(arr[:, i], arr[:, i + 1])
-            i += 2
+            out[f.name] = unp.uarray(v, [f.error(x, q) for x, q in zip(v, p)])
     if sort and len(arr):
         order = np.argsort(nom(out[sort]))
         out = {k: v[order] for k, v in out.items()}
     return out
+
+
+def load_once(filename, fields):
+    """Scheda a riga unica (insert_once): dizionario nome -> valore (ufloat se ha incertezza)."""
+    return {k: v[0] for k, v in load(filename, fields).items()}
 
 
 def load_table(filename, usecols=None, delimiter=None):
@@ -135,11 +159,10 @@ def load_table(filename, usecols=None, delimiter=None):
     usecols   : indici delle colonne da tenere (None = tutte)
     delimiter : separatore (None = riconosciuto tra ',' ';' TAB e spazi)
     """
-    path = os.path.join(DATA_DIR, filename)
-    if not os.path.isfile(path):
+    if not os.path.isfile(_path(filename)):
         raise LabError(f"{filename} non esiste.")
     rows = []
-    with open(path, errors='replace') as f:
+    with open(_path(filename), errors='replace') as f:
         for line in f:
             s = line.strip()
             if not s:
@@ -160,34 +183,87 @@ def load_table(filename, usecols=None, delimiter=None):
     return np.array([r for r in rows if len(r) == n])
 
 
-def insert(filename, fields):
-    """Inserimento interattivo: chiede i valori, calcola le incertezze, aggiunge la riga."""
+def _ask_row(fields):
+    """Chiede una riga. Restituisce (valori da salvare, testo di riepilogo con le incertezze)."""
     def ask(text):
         return float(input(f"  {text}: ").replace(',', '.'))
 
+    row, summary = [], []
+    for f in fields:
+        label = f"{f.name} [{f.unit}]" if f.unit else f.name
+        v = ask(label)
+        p = ask('  ' + f.ask) if f.ask else None
+        row += [v] if p is None else [v, p]
+        s = f.error(v, p)
+        summary.append(f"{f.name} = {v:g}" + (f" ± {s:.2g}" if s is not None else ''))
+    return row, ",  ".join(summary)
+
+
+def insert(filename, fields):
+    """Inserimento interattivo: chiede le letture, mostra le incertezze, aggiunge la riga."""
     print(f"\nInserimento in {filename}. Ctrl+C per finire.")
     while True:
         try:
-            row = []
-            for f in fields:
-                v = ask(f"{f.name} [{f.unit}]" if f.unit else f.name)
-                row.append(v)
-                if f.sigma is None:
-                    continue
-                if callable(f.sigma):
-                    row.append(f.sigma(v, ask('  ' + f.ask)) if f.ask else f.sigma(v))
-                else:
-                    row.append(float(f.sigma))
-            line = "\t".join(f"{x:.6g}" for x in row)
-            print("  -> " + line)
+            row, summary = _ask_row(fields)
+            print("  -> " + summary)
             if input("  Salvare? (s/n): ").strip().lower() == 's':
-                with open(os.path.join(DATA_DIR, filename), 'a') as fh:
-                    fh.write(line + "\n")
+                with open(_path(filename), 'a') as fh:
+                    fh.write("\t".join(f"{x:.10g}" for x in row) + "\n")
         except (KeyboardInterrupt, EOFError):
             print()
             return
-        except ValueError as e:
+        except (ValueError, LabError) as e:
             print(f"  Valore non valido ({e}). Riga scartata.")
+
+
+def insert_once(filename, fields, title=''):
+    """Scheda a riga unica (es. valori dei componenti sul banco): chiede ogni campo una
+    volta e riscrive data/<filename>. Si rilegge con load_once()."""
+    try:
+        old = load_once(filename, fields)
+        print(f"\n{filename} contiene già:")
+        for f in fields:
+            print(f"  {f.name} = {fmt(old[f.name])} {f.unit}".rstrip())
+        if input("Sovrascrivere? (s/n): ").strip().lower() != 's':
+            return
+    except LabError:
+        pass
+    print(f"\nInserimento in {filename}.")
+    try:
+        row, summary = _ask_row(fields)
+    except (ValueError, LabError) as e:
+        print(f"  Valore non valido ({e}). Nulla è stato salvato.")
+        return
+    except (KeyboardInterrupt, EOFError):
+        print()
+        return
+    print("  -> " + summary)
+    if input("  Salvare? (s/n): ").strip().lower() != 's':
+        return
+    if os.path.exists(_path(filename)):
+        os.remove(_path(filename))
+    init_data(filename, fields, title)
+    with open(_path(filename), 'a') as fh:
+        fh.write("\t".join(f"{x:.10g}" for x in row) + "\n")
+
+
+def undo(filename):
+    """Toglie l'ultima riga di dati di data/<filename>, dopo averla mostrata."""
+    if not os.path.isfile(_path(filename)):
+        print(f"  {filename} non esiste.")
+        return
+    with open(_path(filename)) as f:
+        lines = f.readlines()
+    idx = [i for i, l in enumerate(lines) if l.strip() and not l.lstrip().startswith('#')]
+    if not idx:
+        print(f"  {filename}: nessuna riga da togliere.")
+        return
+    print(f"  Ultima riga di {filename}:  {lines[idx[-1]].strip()}")
+    if input("  Toglierla? (s/n): ").strip().lower() == 's':
+        del lines[idx[-1]]
+        with open(_path(filename), 'w') as f:
+            f.writelines(lines)
+        print("  Riga tolta.")
 
 
 def nom(x):
@@ -233,23 +309,27 @@ def linfit(x, y, sy=None):
     return ua, ub, chi2, len(x) - 2
 
 
-def fit(model, x, y, p0, sy=None):
-    """Fit non lineare di model(x, *p). Restituisce (parametri ufloat, chi2, gdl)."""
+def fit(model, x, y, p0, sy=None, key=None):
+    """Fit non lineare di model(x, *p). Restituisce (parametri ufloat, chi2, gdl).
+
+    key : se dato, registra chi2 e gdl per la relazione come \\res{key:chi2} e \\res{key:gdl}.
+    """
     from scipy.optimize import curve_fit
     if sy is None:
         sy = err(y)
     x, y, sy = nom(x), nom(y), np.asarray(sy, dtype=float)
     popt, pcov = curve_fit(model, x, y, p0=p0, sigma=sy, absolute_sigma=True)
     chi2 = float(np.sum(((y - model(x, *popt)) / sy) ** 2))
-    return correlated_values(popt, pcov), chi2, len(x) - len(popt)
+    gdl = len(x) - len(popt)
+    if key:
+        _results.append((f"{key}:chi2", f"{chi2:.2g}"))
+        _results.append((f"{key}:gdl", str(gdl)))
+    return correlated_values(popt, pcov), chi2, gdl
 
 
 # =====================================================
 # RISULTATI
 # =====================================================
-
-_results = []   # (chiave, testo LaTeX) della parte in esecuzione
-
 
 def fmt(x):
     """Testo 'valore ± incertezza' con 2 cifre significative sull'incertezza."""
