@@ -207,6 +207,7 @@ def insert(filename, fields):
             row, summary = _ask_row(fields)
             print("  -> " + summary)
             if input("  Salvare? (s/n): ").strip().lower() == 's':
+                _snapshot(filename)
                 with open(_path(filename), 'a') as fh:
                     fh.write("\t".join(f"{x:.10g}" for x in row) + "\n")
         except (KeyboardInterrupt, EOFError):
@@ -240,6 +241,7 @@ def insert_once(filename, fields, title=''):
     print("  -> " + summary)
     if input("  Salvare? (s/n): ").strip().lower() != 's':
         return
+    _snapshot(filename)
     if os.path.exists(_path(filename)):
         os.remove(_path(filename))
     init_data(filename, fields, title)
@@ -247,23 +249,44 @@ def insert_once(filename, fields, title=''):
         fh.write("\t".join(f"{x:.10g}" for x in row) + "\n")
 
 
-def undo(filename):
-    """Toglie l'ultima riga di dati di data/<filename>, dopo averla mostrata."""
-    if not os.path.isfile(_path(filename)):
-        print(f"  {filename} non esiste.")
+UNDO_DIR = os.path.join(DATA_DIR, '.undo')
+
+
+def _snapshot(filename):
+    """Salva lo stato di data/<filename> prima di una modifica fatta dal menu."""
+    os.makedirs(UNDO_DIR, exist_ok=True)
+    n = 1 + max([int(x.split('_', 1)[0]) for x in os.listdir(UNDO_DIR)] or [0])
+    with open(os.path.join(UNDO_DIR, f"{n:04d}_{filename}"), 'w') as out:
+        if os.path.isfile(_path(filename)):
+            with open(_path(filename)) as f:
+                out.write(f.read())
+
+
+def undo():
+    """Annulla l'ultima modifica fatta dal menu (riga inserita o scheda del banco riscritta).
+    Si può ripetere per tornare indietro di più passi."""
+    snaps = sorted(os.listdir(UNDO_DIR)) if os.path.isdir(UNDO_DIR) else []
+    if not snaps:
+        print("  Niente da annullare.")
         return
-    with open(_path(filename)) as f:
-        lines = f.readlines()
-    idx = [i for i, l in enumerate(lines) if l.strip() and not l.lstrip().startswith('#')]
-    if not idx:
-        print(f"  {filename}: nessuna riga da togliere.")
+    snap = os.path.join(UNDO_DIR, snaps[-1])
+    filename = snaps[-1].split('_', 1)[1]
+    with open(snap) as f:
+        before = f.read()
+    now = open(_path(filename)).read() if os.path.isfile(_path(filename)) else ''
+    gone = [l for l in now.splitlines() if l not in before.splitlines()]
+    back = [l for l in before.splitlines() if l not in now.splitlines()]
+    print(f"  Ultima modifica: {filename}")
+    for l in gone:
+        print(f"    toglie:     {l}")
+    for l in back:
+        print(f"    ripristina: {l}")
+    if input("  Annullare? (s/n): ").strip().lower() != 's':
         return
-    print(f"  Ultima riga di {filename}:  {lines[idx[-1]].strip()}")
-    if input("  Toglierla? (s/n): ").strip().lower() == 's':
-        del lines[idx[-1]]
-        with open(_path(filename), 'w') as f:
-            f.writelines(lines)
-        print("  Riga tolta.")
+    with open(_path(filename), 'w') as f:
+        f.write(before)
+    os.remove(snap)
+    print("  Annullato.")
 
 
 def nom(x):

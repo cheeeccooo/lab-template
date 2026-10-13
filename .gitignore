@@ -4,3 +4,4 @@ __pycache__/
 latex/build/
 docs/*
 !docs/.gitkeep
+data/.undo/

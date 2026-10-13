@@ -44,7 +44,7 @@ def menu():
         if bench:
             print("  b) valori del banco (componenti, impostazioni)")
         print("  i) inserisci misure")
-        print("  u) annulla l'ultima misura inserita")
+        print("  u) annulla l'ultima modifica (ripetibile)")
         for i, p in enumerate(PARTS, 1):
             print(f"  {i}) analisi: {p.TITLE}")
         print("  a) analisi di tutte le parti")
@@ -59,9 +59,7 @@ def menu():
             if p:
                 lab.insert(p.DATA, p.FIELDS)
         elif c == 'u':
-            p = _choose(with_data)
-            if p:
-                lab.undo(p.DATA)
+            lab.undo()
         elif c == 'a':
             for p in PARTS:
                 lab.run(p)

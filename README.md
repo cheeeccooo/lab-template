@@ -94,7 +94,7 @@ latex/           relazione: main.tex, styles.tex, src/, plots/, images/, snippet
 ## Dati
 
 - Misure inserite a mano: un file per parte, colonne separate da TAB. Il file contiene solo le letture e i loro parametri (per esempio la scala); le incertezze si calcolano a ogni analisi dalle specifiche degli strumenti.
-- Un errore di battitura si annulla dal menu (`u` toglie l'ultima riga).
+- `u` nel menu annulla l'ultima modifica ai dati (riga inserita o valori del banco riscritti); ripetuto, torna indietro di più passi.
 - File salvati dagli strumenti (CSV dell'oscilloscopio, acquisizioni): si mettono in `data/` così come sono.
 - Le misure non si correggono. Per escluderne una: `#!` a inizio riga e il motivo in fondo. Resta nel grafico come punto vuoto.
 
