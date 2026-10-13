@@ -33,10 +33,9 @@ def analyze():
     d = lab.load(DATA, FIELDS, sort='x')
     x, y = d['x'], d['y']
 
-    a, b, chi2, gdl = lab.linfit(x, y)
+    a, b, _chi2, _gdl = lab.linfit(x, y)
     lab.report('p1a', 'a', a, 'u.m.')
     lab.report('p1b', 'b', b, '', ref=cfg.B_REF)
-    print(f"  chi2/gdl = {chi2:.2g}/{gdl}")
 
     fig, ax = plt.subplots(figsize=(7, 5))
     lab.errorbar(ax, x, y, label='Dati')

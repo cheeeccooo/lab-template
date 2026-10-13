@@ -50,7 +50,7 @@ Dalla cartella dell'esperienza:
 
 ```sh
 source .venv/bin/activate     # oppure: conda activate lab
-python tools/main.py          # menu: valori del banco, misure, annulla ultima misura, analisi
+python tools/main.py          # menu: valori del banco, misure, annulla, analisi
 python tools/main.py all      # tutte le analisi, senza finestre
 latexmk                       # compila la relazione -> latex/build/<nome>.pdf
 ```

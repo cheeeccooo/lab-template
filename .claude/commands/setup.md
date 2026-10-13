@@ -67,21 +67,7 @@ Chiedi, in un solo messaggio, solo ciò che manca:
 
 Dopo averla creata, proponi di tenerne una copia in `../setup.yaml` per le prossime esperienze del corso.
 
-## 3. Piano
-
-Prima di scrivere codice, presenta all'utente per ogni parte, nell'ordine in cui si farà al banco:
-
-- cosa si legge, con quale strumento e in quale forma;
-- cosa si calcola e con cosa si confronta;
-- come sarà il grafico (assi, scale, cosa viene sovrapposto).
-
-Tutto ciò che la consegna chiede, riga per riga (anche le verifiche qualitative: andamenti, pendenze, confronti), e solo quello. Se pensi che serva altro (un fit, un parametro in più), proponilo qui come opzione. Aspetta l'approvazione.
-
-## 3b. Preferenze
-
-Applica ogni riga di `preferenze`. Se una richiede un pacchetto LaTeX o Python, aggiungilo (`latex/styles.tex`, ambiente di `python`) e verifica che la compilazione o l'analisi giri ancora. Se una preferenza contraddice `.claude/CLAUDE.md`, vale la preferenza.
-
-## 4. Progetto
+## 3. Progetto
 
 Solo se la consegna chiede di scegliere qualcosa. Proponi i valori **prima** che l'utente vada al banco:
 
@@ -90,6 +76,16 @@ Solo se la consegna chiede di scegliere qualcosa. Proponi i valori **prima** che
 - cosa cambia se il valore reale misurato si discosta dal nominale.
 
 Aspetta la conferma dell'utente, poi riporta i valori scelti in `tools/config.py`, ciascuno con un commento che ne dice il motivo: servirà a scrivere le "Scelte di progetto" nella relazione.
+
+## 4. Piano
+
+Prima di scrivere codice, presenta all'utente per ogni parte, nell'ordine in cui si farà al banco:
+
+- cosa si legge, con quale strumento e in quale forma;
+- cosa si calcola e con cosa si confronta;
+- come sarà il grafico (assi, scale, cosa viene sovrapposto).
+
+Tutto ciò che la consegna chiede, riga per riga (anche le verifiche qualitative: andamenti, pendenze, confronti), e solo quello. Se pensi che serva altro (un fit, un parametro in più), proponilo qui come opzione. Aspetta l'approvazione.
 
 ## 5. Repository pulito
 
@@ -106,11 +102,15 @@ La cartella è una copia del template e ne porta la storia git. Al **primo** set
 - `latex/main.tex`: titolo, data, autori nella forma `Nome Cognome (matricola)`;
 - `latex/src/`: la struttura scelta in `relazione` (vedi "Struttura" in `.claude/CLAUDE.md`).
 
-## 7. Verifica
+## 7. Preferenze
+
+Applica ogni riga di `preferenze`. Se una richiede un pacchetto LaTeX o Python, aggiungilo (`latex/styles.tex`, ambiente di `python`) e verifica che la compilazione o l'analisi giri ancora. Se una preferenza contraddice `.claude/CLAUDE.md`, vale la preferenza.
+
+## 8. Verifica
 
 Con dati di prova controlla che l'analisi giri senza errori nell'ambiente indicato, poi rimuovi i dati di prova e i risultati generati.
 
-## 8. procedura.md
+## 9. procedura.md
 
 Scrivi `procedura.md`: la scaletta che l'utente segue al banco, breve, in ordine di esecuzione.
 
