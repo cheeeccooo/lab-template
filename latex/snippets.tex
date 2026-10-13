@@ -1,7 +1,8 @@
 % Schemi pronti da copiare negli src/. Questo file NON viene compilato.
+% Figure e tabelle usano [H]: restano nel punto del testo in cui sono scritte.
 
 % ——— Tabella di misure ———
-\begin{table}[!htbp]
+\begin{table}[H]
     \centering
     \begin{tabular}{ccc}
         \toprule
@@ -15,7 +16,7 @@
 \end{table}
 
 % ——— Tabella di confronto con Z-test (numeri da results.tex) ———
-\begin{table}[!htbp]
+\begin{table}[H]
     \centering
     \begin{tabular}{lcccc}
         \toprule
@@ -39,7 +40,7 @@ Si ottiene $b = (\res{p1b})$~u.m.
 \]
 
 % ——— Grafico singolo ———
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{plots/part1.png}
     \caption{CAPTION}
@@ -47,7 +48,7 @@ Si ottiene $b = (\res{p1b})$~u.m.
 \end{figure}
 
 % ——— Due grafici o foto affiancati ———
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\linewidth]{plots/part1.png}
@@ -72,7 +73,7 @@ Si ottiene $b = (\res{p1b})$~u.m.
 
 % ——— Schema di un circuito (circuitikz) ———
 % Richiede \usepackage[european]{circuitikz} in styles.tex.
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
     \begin{circuitikz}
         \draw (0,0) to[sV, l=$v_i$] (0,2)

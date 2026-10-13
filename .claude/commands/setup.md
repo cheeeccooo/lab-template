@@ -77,7 +77,7 @@ Solo se la consegna chiede di scegliere qualcosa. Proponi i valori **prima** che
 - i vincoli che li limitano: resistenza d'uscita del generatore, impedenza d'ingresso e banda degli strumenti, capacità parassite, massimi dei componenti dal datasheet, portate;
 - cosa cambia se il valore reale misurato si discosta dal nominale.
 
-Aspetta la conferma dell'utente, poi riporta i valori scelti in `tools/config.py`.
+Aspetta la conferma dell'utente, poi riporta i valori scelti in `tools/config.py`, ciascuno con un commento che ne dice il motivo: servirà a scrivere le "Scelte di progetto" nella relazione.
 
 ## 5. Repository pulito
 
@@ -92,7 +92,7 @@ La cartella è una copia del template e ne porta la storia git. Al **primo** set
 - `tools/config.py`: grandezze preliminari, valori di progetto, riferimenti;
 - `tools/partN.py`: uno per parte, con `FIELDS` e `analyze()`; aggiorna `PARTS` in `main.py`. Le grandezze salvate su file dallo strumento si leggono con `lab.load_table`;
 - `latex/main.tex`: titolo, data, autori nella forma `Nome Cognome (matricola)`;
-- `latex/src/`: la struttura scelta in `relazione` (sei sezioni, oppure una copia di `_parte.tex` per parte).
+- `latex/src/`: la struttura scelta in `relazione` (vedi "Struttura" in `.claude/CLAUDE.md`).
 
 ## 7. Verifica
 

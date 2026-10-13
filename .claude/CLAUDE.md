@@ -70,6 +70,13 @@ Le `preferenze` di `setup.yaml` prevalgono su quanto segue.
 - Le tabelle delle misure riportano i valori di `data/`.
 
 **Struttura** (scelta in `setup.yaml`)
-- `sezioni`: introduzione, apparato, metodi, misure, analisi dati, conclusioni; l'analisi è divisa per parte. File in `latex/src/`.
-- `per parte`: una sezione per parte con circuito e procedura, misure, risultati; niente introduzione teorica. Modello in `latex/src/_parte.tex`; i file delle sei sezioni si tolgono.
+- `sezioni`: sommario, introduzione, apparato, metodi, misure, analisi dati, conclusioni; l'analisi è divisa per parte.
+- `per parte`: sommario, introduzione breve, una sezione per parte, conclusioni brevi.
+  - Sommario: 3-5 frasi con i risultati numerici principali.
+  - Introduzione: scopo, elenco delle parti, criterio di confronto. Niente teoria. Si parte da `1_Introduction.tex` togliendo i paragrafi delle formule.
+  - Ogni parte (modello `latex/src/_parte.tex`): scelte di progetto, circuito e procedura, misure, risultati con un commento breve a ciò che si osserva.
+  - Conclusioni: risultati finali in riga e poche osservazioni generali. Si parte da `6_Conclusions.tex`.
+  - I file delle sezioni 2-5 si tolgono.
+- **Scelte di progetto**: quando la consegna lascia liberi elementi o valori, ogni scelta va riportata e motivata nella parte a cui appartiene.
+- Figure e tabelle restano nel punto in cui sono citate (`[H]`).
 - Una sezione o un paragrafo senza contenuto si toglie.
