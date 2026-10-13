@@ -58,13 +58,15 @@ Le `preferenze` di `setup.yaml` prevalgono su quanto segue.
 - Essenziale e concisa: il verbale di ciò che si è fatto e trovato.
 - Linguaggio semplice, da studente universitario. Terza persona o impersonale.
 - Niente riempitivi: avverbi e aggettivi che non aggiungono informazione, frasi di raccordo, premesse.
+- Niente frasi sull'esperienza in sé ("l'esperienza serve a…"): si apre con ciò che si studia.
 - Niente metafore, enfasi o termini altisonanti.
 
 **Contenuto**
 - Teoria: solo le formule usate nell'analisi, ciascuna con una riga di spiegazione.
 - Niente teoria di statistica o di analisi dati: il metodo si nomina (media pesata, fit lineare, Z-test), non si spiega.
 - Niente riferimenti a Python, script, programmi o file del progetto.
-- Ogni scostamento dal valore atteso ha una causa fisica o strumentale indicata, oppure si dichiara che non è stata individuata.
+- Uno scostamento non compatibile con l'atteso ha una causa fisica o strumentale indicata, oppure si dichiara che non è stata individuata. Un risultato compatibile non si giustifica.
+- Solo ciò che si è misurato o fatto: niente stime di effetti non misurati, dettagli di cablaggio, elenchi di ciò che non si è fatto.
 
 **Numeri**
 - Incertezze con al massimo 2 cifre significative; il valore si arrotonda alla stessa cifra.
@@ -77,9 +79,9 @@ Le `preferenze` di `setup.yaml` prevalgono su quanto segue.
 - `per parte`: sommario, introduzione breve, una sezione per parte, conclusioni brevi.
   - Sommario: 3-5 frasi con i risultati numerici principali.
   - Introduzione: scopo, elenco delle parti, criterio di confronto. Niente teoria. Si parte da `1_Introduction.tex` togliendo i paragrafi delle formule.
-  - Ogni parte (modello `latex/src/_parte.tex`): scelte di progetto, circuito e procedura, misure, risultati con un commento breve a ciò che si osserva.
+  - Ogni parte (modello `latex/src/_parte.tex`): scelte di progetto (il motivo, senza percentuali stimate), circuito e procedura, misure, risultati con un commento breve a ciò che si osserva.
   - Conclusioni: risultati finali in riga e poche osservazioni generali. Si parte da `6_Conclusions.tex`.
   - I file delle sezioni 2-5 si tolgono.
 - **Scelte di progetto**: quando la consegna lascia liberi elementi o valori, ogni scelta va riportata e motivata nella parte a cui appartiene.
-- Figure e tabelle restano nel punto in cui sono citate (`[H]`).
+- Figure e tabelle restano nel punto in cui sono citate (`[H]`). I grafici occupano quasi tutta la larghezza del testo.
 - Una sezione o un paragrafo senza contenuto si toglie.

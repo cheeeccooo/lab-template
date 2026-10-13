@@ -75,7 +75,7 @@ Prima di scrivere codice, presenta all'utente per ogni parte, nell'ordine in cui
 - cosa si calcola e con cosa si confronta;
 - come sarà il grafico (assi, scale, cosa viene sovrapposto).
 
-Solo ciò che la consegna chiede. Se pensi che serva altro (un fit, un parametro in più), proponilo qui come opzione. Aspetta l'approvazione.
+Tutto ciò che la consegna chiede, riga per riga (anche le verifiche qualitative: andamenti, pendenze, confronti), e solo quello. Se pensi che serva altro (un fit, un parametro in più), proponilo qui come opzione. Aspetta l'approvazione.
 
 ## 3b. Preferenze
 
