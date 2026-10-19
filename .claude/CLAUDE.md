@@ -6,12 +6,13 @@ Ricevi la consegna di un'esperienza in `docs/`. La leggi, chiedi all'utente ciò
 
 | Fase | Chi | Cosa |
 |---|---|---|
-| 1. Inizializzazione, a casa | `/lab:init` (due volte) | applica il template; scrive `proposta.md` con domande e proposte; dopo le risposte adatta `tools/` e `latex/` e scrive `procedura.md` |
-| 2. Relazione senza dati, a casa | `/lab:relazione-init` | introduzione, scelte di progetto, apparato e procedura |
-| 3. Misure, al banco | utente | segue `procedura.md` e inserisce dal menu di `tools/main.py`: valori del banco, poi una parte alla volta, con l'analisi della parte prima di smontare |
-| 4. Cambiamenti | `/lab:setup` | riallinea analisi, procedura e schemi se qualcosa cambia rispetto al previsto |
-| 5. Relazione | `/lab:relazione` | analisi completa e resto della relazione |
-| 6. Chiusura | `/lab:chiudi` | compila e verifica |
+| 1. Inizializzazione, a casa | `/lab:init` | applica il template; scrive `proposta.md` con domande e proposte |
+| 2. Setup, a casa | `/lab:setup` | legge le risposte, adatta `tools/` e `latex/`, scrive `procedura.md` |
+| 3. Relazione senza dati, a casa | `/lab:relazione-init` | introduzione, scelte di progetto, apparato e procedura |
+| 4. Misure, al banco | utente | segue `procedura.md` e inserisce dal menu di `tools/main.py`: valori del banco, poi una parte alla volta, con l'analisi della parte prima di smontare |
+| 5. Modifiche | `/lab:edit <modifica>` | applica a analisi, procedura e schemi ciò che cambia rispetto al previsto |
+| 6. Relazione | `/lab:relazione` | analisi completa e resto della relazione |
+| 7. Chiusura | `/lab:chiudi` | compila e verifica |
 
 Le skill sono nel template (`skills/`), non nel progetto: `/lab` ne dà una guida breve.
 
@@ -31,7 +32,7 @@ Le skill sono nel template (`skills/`), non nel progetto: `/lab` ne dà una guid
 ```
 setup.yaml            scheda del setup: corso, autori, ambiente, preferenze, strumenti
 proposta.md           domande, proposte e risposte: registro delle scelte e dei loro motivi
-procedura.md          scaletta da seguire al banco, scritta da /lab:init
+procedura.md          scaletta da seguire al banco, scritta da /lab:setup
 docs/                 consegna, manuali degli strumenti
 data/banco.txt        valori misurati una volta sola (componenti, impostazioni)
 data/dataN.txt        letture inserite a mano; solo valori e parametri, le incertezze si calcolano al caricamento

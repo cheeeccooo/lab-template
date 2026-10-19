@@ -8,7 +8,7 @@ description: >-
 
 # lab:relazione-init
 
-Lavora nella cartella dell'esperienza, inizializzata con `/lab:init` (`proposta.md` con `Stato: confermata`). Segui le regole della sezione "Relazione" di `.claude/CLAUDE.md` e le `preferenze` di `setup.yaml`.
+Lavora nella cartella dell'esperienza, impostata con `/lab:init` e `/lab:setup` (`proposta.md` con `Stato: confermata`). Segui le regole della sezione "Relazione" di `.claude/CLAUDE.md` e le `preferenze` di `setup.yaml`.
 
 1. **Fonti**: consegna in `docs/`, `setup.yaml`, `proposta.md` (scelte e loro motivi), `procedura.md`, `tools/config.py`.
 2. **Scrivi**, secondo la struttura di `setup.yaml`:

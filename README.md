@@ -41,7 +41,7 @@ A ogni nuovo terminale va riattivato l'ambiente: `source .venv/bin/activate` opp
 1. Crea la cartella dell'esperienza e mettici solo il materiale: consegna, datasheet, manuali.
 2. Se hai la scheda del corso, tienila nella cartella superiore (`../setup.yaml`).
 3. Apri Claude Code nella cartella e lancia `/lab:init`: applica il template e scrive `proposta.md`.
-4. Rispondi in `proposta.md` (dopo **Risposta:**; vuoto = accetto la proposta) e rilancia `/lab:init`.
+4. Rispondi in `proposta.md` (dopo **Risposta:**; vuoto = accetto la proposta) e lancia `/lab:setup`.
 
 `/lab` mostra in breve tutti i passi.
 
@@ -50,10 +50,10 @@ A ogni nuovo terminale va riattivato l'ambiente: `source .venv/bin/activate` opp
 | Quando | Cosa | Cosa succede |
 |---|---|---|
 | a casa | `/lab:init` | template applicato; `proposta.md`: prima stesura della procedura con domande e proposte motivate |
-| a casa | rispondi in `proposta.md`, poi `/lab:init` | risposte confermate; analisi e relazione predisposte; `procedura.md` pronta |
+| a casa | rispondi in `proposta.md`, poi `/lab:setup` | risposte confermate; analisi e relazione predisposte; `procedura.md` pronta |
 | a casa | `/lab:relazione-init` | parti della relazione che non dipendono dalle misure |
 | al banco | segui `procedura.md` e il menu | valori del banco, una parte alla volta, analisi della parte prima di smontare |
-| se cambia qualcosa | `/lab:setup` | analisi, procedura e schemi riallineati; le misure non si toccano |
+| se cambia qualcosa | `/lab:edit <modifica>` | la modifica applicata ad analisi, procedura e schemi; le misure non si toccano |
 | dopo le misure | `/lab:relazione` | analisi completa e resto della relazione |
 | prima della consegna | `/lab:chiudi` | controllo finale di numeri, segnaposto e stile |
 
@@ -87,7 +87,7 @@ relazione:
 `preferenze` è il posto per ogni indicazione stabile su come lavorare (richieste del docente, scelte di stile, pacchetti da usare): l'agente le applica a ogni passo.
 
 - `/lab:init` copia quella del corso e chiede solo ciò che manca o che l'esperienza cambia; se qualcosa vale per tutto il corso, chiede se aggiornare anche quella.
-- Se qualcosa cambia, si corregge lì e si lancia `/lab:setup`.
+- Se qualcosa cambia, si corregge lì e si lancia `/lab:edit`.
 - I valori della singola esperienza (componenti misurati, riferimenti) non stanno qui ma in `tools/config.py`.
 - Una copia nella cartella superiore evita di ripetere autori e strumenti a ogni esperienza.
 
@@ -96,7 +96,7 @@ relazione:
 ```
 setup.yaml       scheda del setup
 proposta.md      domande, proposte e risposte: registro delle scelte
-procedura.md     scaletta da seguire al banco, scritta da /lab:init
+procedura.md     scaletta da seguire al banco, scritta da /lab:setup
 docs/            consegna e manuali (non versionati)
 data/            misure, un file per parte
 tools/           analisi: main.py, una partN.py per parte, instruments.py, config.py, lab.py
@@ -130,7 +130,7 @@ Spenta di default. Per usarla: togliere il commento alle due righe `biblatex` in
 Istruzioni e skill sono file di testo e non dipendono da Claude. Con un altro agente:
 
 - indicagli `.claude/CLAUDE.md` come file di istruzioni, o copialo dove l'agente lo cerca (per esempio `AGENTS.md` nella radice);
-- al posto di `/lab:init`, `/lab:setup`, ecc., chiedigli di seguire il `SKILL.md` corrispondente in `skills/` del template.
+- al posto di `/lab:init`, `/lab:setup`, `/lab:edit`, ecc., chiedigli di seguire il `SKILL.md` corrispondente in `skills/` del template.
 
 ## Errori comuni
 
