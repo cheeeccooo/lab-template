@@ -37,7 +37,8 @@ Una procedura già pronta da seguire al banco, con le domande nel punto in cui s
 - **nel titolo, tra parentesi, la parte a cui si riferisce e il dilemma in poche parole**: `### D3 · Capacità d'ingresso (progetto: quale $C_i$ per avere il taglio a 100 Hz)`;
 - **il motivo è un elenco puntato**, una ragione per punto;
 - **valori in tabella** quando sono più di due (componenti, punto di lavoro atteso, frequenze);
-- sezioni separate da `---`.
+- sezioni separate da `---`;
+- **nella procedura, ogni parte ha il tempo stimato nel titolo e finisce con un riquadro `> **Alla fine hai:**`**: i valori attesi (in tabella se sono più di due), cosa deve risultare inserito o salvato, cosa deve mostrare il grafico. All'inizio della procedura, il tempo totale.
 
 ```markdown
 # Proposta — <titolo dell'esperienza>
@@ -94,13 +95,19 @@ Poi lancia `/lab:setup`.
 
 ## Procedura
 
-### Valori del banco
+Tempo stimato in tutto: **circa …**, montaggio compreso.
+
+### Valori del banco · circa 10 min
 - …
 
-### Parte 1 — …
+> **Alla fine hai:** i componenti misurati e inseriti con la voce `b` del menu.
+
+### Parte 1 — … · circa … min
 - montare …; impostare …; leggere …, con tutte le cifre del display
 - **Controllo:** se leggi …, controlla …
 - A fine parte: analisi della parte, prima di smontare.
+
+> **Alla fine hai:** … (valori attesi, cosa è inserito o salvato, cosa mostra il grafico)
 ```
 
 Regole per le domande:
