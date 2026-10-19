@@ -38,7 +38,7 @@ Una procedura già pronta da seguire al banco, con le domande nel punto in cui s
 - **il motivo è un elenco puntato**, una ragione per punto;
 - **valori in tabella** quando sono più di due (componenti, punto di lavoro atteso, frequenze);
 - sezioni separate da `---`;
-- **nella procedura, ogni parte ha il tempo stimato nel titolo e finisce con un riquadro `> **Alla fine hai:**`**: i valori attesi (in tabella se sono più di due), cosa deve risultare inserito o salvato, cosa deve mostrare il grafico. All'inizio della procedura, il tempo totale.
+- **nella procedura, ogni parte ha il tempo stimato nel titolo e finisce con un riquadro `> **Alla fine hai:**`** con un elenco puntato, un risultato per punto, nell'ordine dei passi: cosa è inserito o salvato, i valori attesi (in tabella se sono più di due), cosa mostra il grafico. All'inizio della procedura, il tempo totale.
 
 ```markdown
 # Proposta — <titolo dell'esperienza>
@@ -100,14 +100,18 @@ Tempo stimato in tutto: **circa …**, montaggio compreso.
 ### Valori del banco · circa 10 min
 - …
 
-> **Alla fine hai:** i componenti misurati e inseriti con la voce `b` del menu.
+> **Alla fine hai:**
+> - i componenti misurati e inseriti con la voce `b` del menu
 
 ### Parte 1 — … · circa … min
 - montare …; impostare …; leggere …, con tutte le cifre del display
 - **Controllo:** se leggi …, controlla …
 - A fine parte: analisi della parte, prima di smontare.
 
-> **Alla fine hai:** … (valori attesi, cosa è inserito o salvato, cosa mostra il grafico)
+> **Alla fine hai:**
+> - … inserito o salvato
+> - valore atteso: …
+> - il grafico mostra: …
 ```
 
 Regole per le domande:
