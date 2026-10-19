@@ -18,7 +18,7 @@ Lavora nella cartella dell'esperienza. Segui `.claude/CLAUDE.md` del progetto e 
 | `proposta.md` con `Stato: confermata` | setup già fatto: per cambiare qualcosa rimanda a `/lab:edit` e fermati |
 
 1. **Leggi le risposte.** Vuoto = proposta accettata. Una risposta ambigua, o che apre una scelta nuova, diventa una nuova domanda nel file, nello stesso punto: lascia `Stato: in attesa di risposte`, di' all'utente cosa manca, che rilanci `/lab:setup`, e fermati. Le domande già risposte non si ripetono.
-2. **Quando tutto è risposto**, applica:
+2. **Quando tutto è risposto**, applica (e scrivi `procedura.md` con lo stesso stile di `proposta.md`: matematica in `$...$`, valori in tabella):
    - `setup.yaml`; se una risposta chiede di aggiornare `../setup.yaml`, aggiornalo;
    - `tools/instruments.py`, `tools/config.py` (valori di progetto, ciascuno con il motivo; `BENCH_FIELDS` per i valori del banco), una `tools/partN.py` per parte e `PARTS` in `main.py`, nell'ordine del banco;
    - `latex/`: struttura scelta in `setup.yaml`, titolo, data, autori, pacchetti richiesti dalle `preferenze`, schemi dei circuiti;

@@ -30,46 +30,76 @@ Il template è la cartella che contiene questa skill, due livelli sopra: `realpa
 
 ## Formato di proposta.md
 
-Una procedura già pronta da seguire al banco, con le domande nel punto in cui servono. Breve, in ordine di esecuzione. Ogni domanda ha un numero, una proposta motivata (o "nessuna proposta") e lo spazio per la risposta.
+Una procedura già pronta da seguire al banco, con le domande nel punto in cui servono. Breve, in ordine di esecuzione, leggibile a colpo d'occhio nell'anteprima Markdown:
+
+- **matematica in `$...$`** (`$R_1 \parallel R_2$`, `$\dfrac{1}{2\pi R C}$`), mai formule in testo semplice;
+- **una domanda = un blocco** con titolo proprio e tre paragrafi separati da righe vuote: Proposta, Motivo, Risposta;
+- **il motivo è un elenco puntato**, una ragione per punto;
+- **valori in tabella** quando sono più di due (componenti, punto di lavoro atteso, frequenze);
+- sezioni separate da `---`.
 
 ```markdown
 # Proposta — <titolo dell'esperienza>
 
 Stato: in attesa di risposte
 
-Rispondi dopo **Risposta:**. Vuoto = accetto la proposta. Le domande con "nessuna proposta" vanno risposte.
+Scrivi accanto a **Risposta:**. Vuoto = accetto la proposta. Le domande con "nessuna proposta" vanno risposte.
 Poi lancia `/lab:setup`.
+
+---
 
 ## Scheda
 
-**D1.** Data dell'esperienza? — nessuna proposta
-Risposta:
+### D1 · Data dell'esperienza
 
-**D2.** Aggiungere l'oscilloscopio X alla scheda del corso `../setup.yaml`? — proposta: sì, servirà anche nelle prossime esperienze.
-Risposta:
+**Proposta:** nessuna
+
+**Risposta:** 
+
+---
 
 ## Progetto
 
-**D3.** Partitore di base: proposta R1 = 56 kΩ, R2 = 8.2 kΩ (valori commerciali). Motivo: V_B = 1.53 V … corrente nel partitore 10 volte quella di base nel caso peggiore h_fe = 50.
-Risposta:
+| $V_{CC}$ | $R_E$ | $R_C$ |
+|:---:|:---:|:---:|
+| 12 V | 1 kΩ | 8.2 kΩ |
+
+### D2 · Capacità d'ingresso
+
+**Proposta:** $C_i = 220\ \text{nF}$
+
+**Motivo:**
+- $R_i = R_1 \parallel R_2 \parallel h_{fe} R_E \approx 7 – 8\ \text{k}\Omega$
+- $f_T = \dfrac{1}{2\pi\,(R_s + R_i)\,C_i} \approx 100\ \text{Hz}$, come chiede la consegna
+- valore commerciale
+
+**Risposta:** 
+
+---
 
 ## Piano dell'analisi
 
-Per ogni parte: cosa si legge e con quale strumento, cosa si calcola, con cosa si confronta, com'è il grafico.
+| Parte | Si legge | Si calcola e si confronta | Grafico |
+|---|---|---|---|
+| 1. … | … | … | … |
 
-**D4.** Approvi il piano? — proposta: sì.
-Risposta:
+### D3 · Piano
+
+**Proposta:** approvato così.
+
+**Risposta:** 
+
+---
 
 ## Procedura
 
 ### Valori del banco
-- misurare R1, R2, R_C, R_E con il multimetro …
+- …
 
 ### Parte 1 — …
 - montare …; impostare …; leggere …, con tutte le cifre del display
-- punti: …
-- controllo: se leggi …, controlla …
-- a fine parte: analisi della parte, prima di smontare
+- **Controllo:** se leggi …, controlla …
+- A fine parte: analisi della parte, prima di smontare.
 ```
 
 Regole per le domande:
