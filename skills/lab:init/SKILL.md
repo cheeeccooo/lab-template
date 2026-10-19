@@ -34,6 +34,7 @@ Una procedura già pronta da seguire al banco, con le domande nel punto in cui s
 
 - **matematica in `$...$`** (`$R_1 \parallel R_2$`, `$\dfrac{1}{2\pi R C}$`), mai formule in testo semplice;
 - **una domanda = un blocco** con titolo proprio e tre paragrafi separati da righe vuote: Proposta, Motivo, Risposta;
+- **nel titolo, tra parentesi, la parte a cui si riferisce e il dilemma in poche parole**: `### D3 · Capacità d'ingresso (progetto: quale $C_i$ per avere il taglio a 100 Hz)`;
 - **il motivo è un elenco puntato**, una ragione per punto;
 - **valori in tabella** quando sono più di due (componenti, punto di lavoro atteso, frequenze);
 - sezioni separate da `---`.
@@ -50,7 +51,7 @@ Poi lancia `/lab:setup`.
 
 ## Scheda
 
-### D1 · Data dell'esperienza
+### D1 · Data dell'esperienza (scheda: quale data va sul frontespizio)
 
 **Proposta:** nessuna
 
@@ -64,7 +65,7 @@ Poi lancia `/lab:setup`.
 |:---:|:---:|:---:|
 | 12 V | 1 kΩ | 8.2 kΩ |
 
-### D2 · Capacità d'ingresso
+### D2 · Capacità d'ingresso (progetto: quale $C_i$ per avere il taglio basso a circa 100 Hz)
 
 **Proposta:** $C_i = 220\ \text{nF}$
 
@@ -83,7 +84,7 @@ Poi lancia `/lab:setup`.
 |---|---|---|---|
 | 1. … | … | … | … |
 
-### D3 · Piano
+### D3 · Piano (tutte le parti: se l'analisi proposta copre la consegna)
 
 **Proposta:** approvato così.
 
