@@ -6,11 +6,19 @@ Punto di partenza per un'esperienza di laboratorio di fisica: analisi dati in Py
 
 - **Python 3** in un ambiente virtuale (`venv` o conda), non quello di sistema.
 - **TeX Live** con `latexmk`.
-- **Un agente di programmazione.** Il template è predisposto per [Claude Code](https://claude.com/claude-code); con un altro agente vedi [Altri agenti](#altri-agenti).
+- **Un agente di programmazione.** Il template è predisposto per [Claude Code](https://claude.com/claude-code), con le skill in `skills/`; con un altro agente vedi [Altri agenti](#altri-agenti).
 
 ## Installazione
 
-Una volta sola. Con `venv`, dalla cartella dell'esperienza:
+Una volta sola. Le skill (`/lab`, `/lab:init`, …) si collegano tra le skill utente di Claude Code:
+
+```sh
+./skills/install.sh
+```
+
+Sono collegamenti alla cartella `skills/` del template: modificarle qui le aggiorna ovunque, e non vengono copiate nelle esperienze.
+
+Python, con `venv` dalla cartella dell'esperienza:
 
 ```sh
 python3 -m venv .venv
@@ -30,19 +38,24 @@ A ogni nuovo terminale va riattivato l'ambiente: `source .venv/bin/activate` opp
 
 ## Nuova esperienza
 
-1. Copia questa cartella e rinominala.
-2. Metti la consegna e i manuali degli strumenti in `docs/`.
-3. Se hai già un `setup.yaml` di un'esperienza precedente, mettilo nella cartella superiore (`../setup.yaml`).
-4. Apri l'agente nella cartella e lancia `/setup`.
+1. Crea la cartella dell'esperienza e mettici solo il materiale: consegna, datasheet, manuali.
+2. Se hai la scheda del corso, tienila nella cartella superiore (`../setup.yaml`).
+3. Apri Claude Code nella cartella e lancia `/lab:init`: applica il template e scrive `proposta.md`.
+4. Rispondi in `proposta.md` (dopo **Risposta:**; vuoto = accetto la proposta) e rilancia `/lab:init`.
+
+`/lab` mostra in breve tutti i passi.
 
 ## Flusso
 
-| Passo | Cosa fai | Cosa succede |
+| Quando | Cosa | Cosa succede |
 |---|---|---|
-| `/setup` | rispondi alle domande e approvi il piano | l'agente legge la consegna, crea o riusa `setup.yaml`, ti fa approvare cosa misurare, calcolare e graficare, adatta `tools/` e scrive `procedura.md` |
-| misure | segui `procedura.md` e inserisci dal menu | prima i valori del banco, poi una parte alla volta, con l'analisi subito dopo ogni parte |
-| `/relazione` | — | introduzione, apparato e metodi si possono scrivere mentre misuri; il resto dopo i dati |
-| `/chiudi` | decidi sui punti aperti | controllo finale di numeri, segnaposto e stile |
+| a casa | `/lab:init` | template applicato; `proposta.md`: prima stesura della procedura con domande e proposte motivate |
+| a casa | rispondi in `proposta.md`, poi `/lab:init` | risposte confermate; analisi e relazione predisposte; `procedura.md` pronta |
+| a casa | `/lab:relazione-init` | parti della relazione che non dipendono dalle misure |
+| al banco | segui `procedura.md` e il menu | valori del banco, una parte alla volta, analisi della parte prima di smontare |
+| se cambia qualcosa | `/lab:setup` | analisi, procedura e schemi riallineati; le misure non si toccano |
+| dopo le misure | `/lab:relazione` | analisi completa e resto della relazione |
+| prima della consegna | `/lab:chiudi` | controllo finale di numeri, segnaposto e stile |
 
 ## Comandi da terminale
 
@@ -57,7 +70,7 @@ latexmk                       # compila la relazione -> latex/build/<nome>.pdf
 
 ## setup.yaml
 
-Scheda breve in YAML, creata da `/setup` la prima volta e pensata per essere modificata a mano: corso, autori con matricola, ambiente Python, preferenze, struttura e nome del PDF della relazione, titolo e data dell'esperienza, strumenti con le specifiche di incertezza.
+Scheda breve in YAML, creata da `/lab:init` la prima volta e pensata per essere modificata a mano: corso, autori con matricola, ambiente Python, preferenze, struttura e nome del PDF della relazione, titolo e data dell'esperienza, strumenti con le specifiche di incertezza.
 
 ```yaml
 autori:
@@ -73,8 +86,8 @@ relazione:
 
 `preferenze` è il posto per ogni indicazione stabile su come lavorare (richieste del docente, scelte di stile, pacchetti da usare): l'agente le applica a ogni passo.
 
-- Se esiste, `/setup` non rifà le domande: chiede solo ciò che manca o che l'esperienza cambia.
-- Se qualcosa cambia, si corregge lì e si rilancia `/setup`.
+- `/lab:init` copia quella del corso e chiede solo ciò che manca o che l'esperienza cambia; se qualcosa vale per tutto il corso, chiede se aggiornare anche quella.
+- Se qualcosa cambia, si corregge lì e si lancia `/lab:setup`.
 - I valori della singola esperienza (componenti misurati, riferimenti) non stanno qui ma in `tools/config.py`.
 - Una copia nella cartella superiore evita di ripetere autori e strumenti a ogni esperienza.
 
@@ -82,13 +95,15 @@ relazione:
 
 ```
 setup.yaml       scheda del setup
-procedura.md     scaletta da seguire al banco, scritta da /setup
+proposta.md      domande, proposte e risposte: registro delle scelte
+procedura.md     scaletta da seguire al banco, scritta da /lab:init
 docs/            consegna e manuali (non versionati)
 data/            misure, un file per parte
 tools/           analisi: main.py, una partN.py per parte, instruments.py, config.py, lab.py
 results.txt      risultati dell'analisi
 latex/           relazione: main.tex, styles.tex, src/, plots/, images/, snippets.tex
-.claude/         CLAUDE.md (istruzioni e convenzioni per l'agente) e i comandi
+.claude/         CLAUDE.md: istruzioni e convenzioni per l'agente
+skills/          le skill lab* (solo nel template, non nelle esperienze)
 ```
 
 ## Dati
@@ -112,10 +127,10 @@ Spenta di default. Per usarla: togliere il commento alle due righe `biblatex` in
 
 ## Altri agenti
 
-Le istruzioni stanno in `.claude/CLAUDE.md` e i tre comandi in `.claude/commands/`: sono file di testo e non dipendono da Claude. Con un altro agente:
+Istruzioni e skill sono file di testo e non dipendono da Claude. Con un altro agente:
 
 - indicagli `.claude/CLAUDE.md` come file di istruzioni, o copialo dove l'agente lo cerca (per esempio `AGENTS.md` nella radice);
-- al posto di `/setup`, `/relazione` e `/chiudi`, chiedigli di seguire il file corrispondente in `.claude/commands/`.
+- al posto di `/lab:init`, `/lab:setup`, ecc., chiedigli di seguire il `SKILL.md` corrispondente in `skills/` del template.
 
 ## Errori comuni
 

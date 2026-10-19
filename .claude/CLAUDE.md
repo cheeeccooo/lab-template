@@ -6,11 +6,14 @@ Ricevi la consegna di un'esperienza in `docs/`. La leggi, chiedi all'utente ciò
 
 | Fase | Chi | Cosa |
 |---|---|---|
-| 1. Setup | agente, `/setup` | legge la consegna, crea o riusa `setup.yaml`, fa approvare il piano, adatta `tools/`, scrive `procedura.md` |
-| 2. Misure | utente | segue `procedura.md` e inserisce dal menu di `tools/main.py`: valori del banco, poi una parte alla volta |
-| 3. Analisi | agente o utente | subito dopo le misure di ogni parte, quando un punto si può ancora rifare |
-| 4. Relazione | agente, `/relazione` | scrive `latex/src/`; le parti senza dati si possono scrivere durante la fase 2 |
-| 5. Chiusura | agente, `/chiudi` | compila e verifica |
+| 1. Inizializzazione, a casa | `/lab:init` (due volte) | applica il template; scrive `proposta.md` con domande e proposte; dopo le risposte adatta `tools/` e `latex/` e scrive `procedura.md` |
+| 2. Relazione senza dati, a casa | `/lab:relazione-init` | introduzione, scelte di progetto, apparato e procedura |
+| 3. Misure, al banco | utente | segue `procedura.md` e inserisce dal menu di `tools/main.py`: valori del banco, poi una parte alla volta, con l'analisi della parte prima di smontare |
+| 4. Cambiamenti | `/lab:setup` | riallinea analisi, procedura e schemi se qualcosa cambia rispetto al previsto |
+| 5. Relazione | `/lab:relazione` | analisi completa e resto della relazione |
+| 6. Chiusura | `/lab:chiudi` | compila e verifica |
+
+Le skill sono nel template (`skills/`), non nel progetto: `/lab` ne dà una guida breve.
 
 ## Regole
 
@@ -27,7 +30,8 @@ Ricevi la consegna di un'esperienza in `docs/`. La leggi, chiedi all'utente ciò
 
 ```
 setup.yaml            scheda del setup: corso, autori, ambiente, preferenze, strumenti
-procedura.md          scaletta da seguire al banco, scritta da /setup
+proposta.md           domande, proposte e risposte: registro delle scelte e dei loro motivi
+procedura.md          scaletta da seguire al banco, scritta da /lab:init
 docs/                 consegna, manuali degli strumenti
 data/banco.txt        valori misurati una volta sola (componenti, impostazioni)
 data/dataN.txt        letture inserite a mano; solo valori e parametri, le incertezze si calcolano al caricamento
