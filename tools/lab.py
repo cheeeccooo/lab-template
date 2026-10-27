@@ -160,6 +160,17 @@ def load_once(filename, fields):
     return {k: v[0] for k, v in load(filename, fields).items()}
 
 
+def load_one(filename, fields):
+    """Come load(), per un file che deve avere una sola misura valida: dizionario
+    nome -> valore. Le righe sostituite vanno escluse con '#!'."""
+    d = load(filename, fields)
+    n = len(next(iter(d.values())))
+    if n != 1:
+        raise LabError(f"{filename}: attesa una sola misura valida, trovate {n}"
+                       " (escludere le altre con '#!').")
+    return {k: v[0] for k, v in d.items()}
+
+
 def load_table(filename, usecols=None, delimiter=None):
     """Legge un file grezzo di uno strumento (CSV dell'oscilloscopio, acquisizione...)
     da data/<filename>. Restituisce un array 2D con le sole righe numeriche:
