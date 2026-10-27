@@ -52,7 +52,8 @@ A ogni nuovo terminale va riattivato l'ambiente: `source .venv/bin/activate` opp
 | a casa | `/lab:init` | template applicato; `proposta.md`: prima stesura della procedura con domande e proposte motivate |
 | a casa | rispondi in `proposta.md`, poi `/lab:setup` | risposte confermate; analisi e relazione predisposte; `procedura.md` pronta |
 | a casa | `/lab:relazione-init` | parti della relazione che non dipendono dalle misure |
-| al banco | segui `procedura.md` e il menu | valori del banco, una parte alla volta, analisi della parte prima di smontare |
+| al banco | segui `procedura.md` e il menu | valori del banco, poi una parte alla volta; il menu propone i punti previsti in ordine |
+| finita una parte | `/lab:check <parte>` | analisi della parte e confronto con l'atteso: dice se si può smontare |
 | se cambia qualcosa | `/lab:edit <modifica>` | la modifica applicata ad analisi, procedura e schemi; le misure non si toccano |
 | dopo le misure | `/lab:relazione` | analisi completa e resto della relazione |
 | prima della consegna | `/lab:chiudi` | controllo finale di numeri, segnaposto e stile |
@@ -109,6 +110,7 @@ skills/          le skill lab* (solo nel template, non nelle esperienze)
 ## Dati
 
 - Misure inserite a mano: un file per parte, colonne separate da TAB. Il file contiene solo le letture e i loro parametri (per esempio la scala); le incertezze si calcolano a ogni analisi dalle specifiche degli strumenti.
+- `Ctrl+C` a metà riga chiede se tenere i valori già inseriti: al prossimo inserimento si riprende da lì.
 - `u` nel menu annulla l'ultima modifica ai dati (riga inserita o valori del banco riscritti); ripetuto, torna indietro di più passi.
 - File salvati dagli strumenti (CSV dell'oscilloscopio, acquisizioni): si mettono in `data/` così come sono.
 - Le misure non si correggono. Per escluderne una: `#!` a inizio riga e il motivo in fondo. Resta nel grafico come punto vuoto.
@@ -130,7 +132,7 @@ Spenta di default. Per usarla: togliere il commento alle due righe `biblatex` in
 Istruzioni e skill sono file di testo e non dipendono da Claude. Con un altro agente:
 
 - indicagli `.claude/CLAUDE.md` come file di istruzioni, o copialo dove l'agente lo cerca (per esempio `AGENTS.md` nella radice);
-- al posto di `/lab:init`, `/lab:setup`, `/lab:edit`, ecc., chiedigli di seguire il `SKILL.md` corrispondente in `skills/` del template.
+- al posto di `/lab:init`, `/lab:setup`, `/lab:check`, ecc., chiedigli di seguire il `SKILL.md` corrispondente in `skills/` del template.
 
 ## Errori comuni
 

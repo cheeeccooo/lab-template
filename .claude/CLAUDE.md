@@ -9,7 +9,8 @@ Ricevi la consegna di un'esperienza in `docs/`. La leggi, chiedi all'utente ciò
 | 1. Inizializzazione, a casa | `/lab:init` | applica il template; scrive `proposta.md` con domande e proposte |
 | 2. Setup, a casa | `/lab:setup` | legge le risposte, adatta `tools/` e `latex/`, scrive `procedura.md` |
 | 3. Relazione senza dati, a casa | `/lab:relazione-init` | introduzione, scelte di progetto, apparato e procedura |
-| 4. Misure, al banco | utente | segue `procedura.md` e inserisce dal menu di `tools/main.py`: valori del banco, poi una parte alla volta, con l'analisi della parte prima di smontare |
+| 4. Misure, al banco | utente | segue `procedura.md` e inserisce dal menu di `tools/main.py`: valori del banco, poi una parte alla volta |
+| 4b. Controllo, al banco | `/lab:check <parte>` | a fine parte, prima di smontare: analisi della parte e confronto con l'atteso |
 | 5. Modifiche | `/lab:edit <modifica>` | applica a analisi, procedura e schemi ciò che cambia rispetto al previsto |
 | 6. Relazione | `/lab:relazione` | analisi completa e resto della relazione |
 | 7. Chiusura | `/lab:chiudi` | compila e verifica |
@@ -22,6 +23,7 @@ Le skill sono nel template (`skills/`), non nel progetto: `/lab` ne dà una guid
 - **Fai ciò che la consegna chiede, non di più.** Fit, parametri, test e grafici che la consegna non chiede si propongono all'utente, non si aggiungono.
 - **Non inventare nulla**: né misure, né specifiche degli strumenti, né valori di riferimento. Se manca un dato, chiedilo.
 - **Le misure non si modificano.** Una misura sbagliata si esclude con `#!` a inizio riga e il motivo in fondo; resta nel grafico come punto vuoto e va dichiarata nella relazione.
+- **I valori attesi si calcolano dai valori misurati** (componenti del banco), con l'incertezza propagata. I nominali della consegna servono solo a orientarsi nella procedura prima delle misure.
 - **Le incertezze vengono dal manuale dello strumento** (marca e modello esatti): il limite dichiarato si usa come σ. Una stima a occhio va dichiarata come tale. Le σ non si ritoccano dopo aver visto un risultato; il χ² si riporta solo se richiesto.
 - **Mai il Python di sistema.** Usa l'interprete dell'ambiente indicato in `setup.yaml` (voce `python`); se manca un pacchetto, installalo lì.
 - **Le `preferenze` di `setup.yaml` valgono sempre**, anche contro le convenzioni di questo file.
@@ -36,6 +38,7 @@ procedura.md          scaletta da seguire al banco, scritta da /lab:setup
 docs/                 consegna, manuali degli strumenti
 data/banco.txt        valori misurati una volta sola (componenti, impostazioni)
 data/dataN.txt        letture inserite a mano; solo valori e parametri, le incertezze si calcolano al caricamento
+data/.bozza/          righe interrotte a metà, riprese al prossimo inserimento
 data/*.csv            file salvati dagli strumenti, letti con lab.load_table
 tools/main.py         menu e riga di comando; elenco PARTS
 tools/partN.py        una parte: TITLE, DATA, FIELDS, analyze()
@@ -50,6 +53,7 @@ latex/snippets.tex    schemi di tabelle e figure da copiare
 
 - `part1.py` è un esempio: sostituiscilo. Una parte solo qualitativa ha `DATA = None`.
 - Le parti in `PARTS` e i campi in `FIELDS` seguono l'ordine in cui si lavora al banco.
+- Ogni campo ha un nome breve e una `label` che dice cosa è la lettura ("ingresso, picco-picco, CH1"); una parte con punti previsti (frequenze, tensioni) li dichiara in `PLAN`, e il menu li propone in ordine.
 - Se serve una funzione generale che manca, aggiungila a `lab.py`.
 - `setup.yaml` è la fonte per autori, titolo, data e specifiche degli strumenti: `instruments.py` e `main.tex` devono coincidere con esso.
 - Dipendenze in `requirements.txt`.

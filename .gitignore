@@ -5,3 +5,4 @@ latex/build/
 docs/*
 !docs/.gitkeep
 data/.undo/
+data/.bozza/

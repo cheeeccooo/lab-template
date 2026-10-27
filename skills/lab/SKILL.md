@@ -2,7 +2,7 @@
 name: lab
 description: >-
   Guida breve alla famiglia di skill per le esperienze di laboratorio (analisi in Python e
-  relazione in LaTeX): mostra cosa fanno lab:init, lab:setup, lab:edit,
+  relazione in LaTeX): mostra cosa fanno lab:init, lab:setup, lab:check, lab:edit,
   lab:relazione-init, lab:relazione e lab:chiudi e in che ordine si usano. Usare per /lab, "come si usano le
   skill del laboratorio", "da dove parto per una nuova esperienza".
 ---
@@ -22,7 +22,8 @@ Si lanciano dalla cartella dell'esperienza, in quest'ordine:
 | a casa, cartella con solo il materiale | `/lab:init` | applica il template, legge la consegna e scrive `proposta.md`: prima stesura della procedura, con domande e proposte motivate |
 | a casa, dopo aver risposto in `proposta.md` | `/lab:setup` | conferma le risposte, prepara analisi e relazione, scrive `procedura.md` |
 | a casa, se vuoi | `/lab:relazione-init` | scrive le parti della relazione che non dipendono dalle misure |
-| al banco | menu `python tools/main.py` | segui `procedura.md`: valori del banco, misure, `u` annulla, analisi di ogni parte |
+| al banco | menu `python tools/main.py` | segui `procedura.md`: valori del banco, misure, `u` annulla, analisi; `Ctrl+C` interrompe e la riga a metà si riprende dopo |
+| al banco, finita una parte | `/lab:check <parte>` | analisi della parte e confronto con l'atteso ricalcolato dai valori misurati: dice se si può smontare |
 | quando cambia qualcosa | `/lab:edit <modifica>` | applica la modifica ad analisi, procedura e schemi; le misure non si toccano |
 | dopo la presa dati | `/lab:relazione` | analisi completa e resto della relazione |
 | prima della consegna | `/lab:chiudi` | controllo finale; `latexmk` produce il PDF |

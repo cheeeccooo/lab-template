@@ -57,7 +57,7 @@ def menu():
         elif c == 'i':
             p = _choose(with_data)
             if p:
-                lab.insert(p.DATA, p.FIELDS)
+                lab.insert(p.DATA, p.FIELDS, getattr(p, 'PLAN', None))
         elif c == 'u':
             lab.undo()
         elif c == 'a':

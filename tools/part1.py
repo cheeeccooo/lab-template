@@ -6,7 +6,8 @@ Ogni parte dell'esperienza è un file come questo, con:
   DATA    : file in data/ riempito dal menu di inserimento; None se la parte è
             solo qualitativa o se legge file salvati da uno strumento
             (in quel caso: lab.load_table('nomefile.csv') dentro analyze)
-  FIELDS  : grandezze misurate, nell'ordine delle colonne
+  FIELDS  : grandezze misurate, nell'ordine in cui si leggono; nomi brevi con label
+  PLAN    : facoltativo, valori previsti del primo campo (es. le frequenze della procedura)
   analyze : calcoli, confronti (lab.report) e grafici (lab.savefig)
 e va aggiunta a PARTS in main.py.
 """
@@ -22,11 +23,13 @@ from lab import Field
 TITLE = "legge lineare"
 DATA = 'data1.txt'
 FIELDS = [
-    Field('x', 'u.m.', sigma=ins.reading(0.1)),          # incertezza costante
-    Field('y', 'u.m.', sigma=lambda v: ins.digital(v, pct=1, digits=1, res=0.01)),
+    Field('x', 'u.m.', sigma=ins.reading(0.1), label='posizione sul righello'),       # σ costante
+    Field('y', 'u.m.', sigma=lambda v: ins.digital(v, pct=1, digits=1, res=0.01),
+          label='lettura del display'),
     # con un parametro chiesto a ogni misura:
-    # Field('V', 'V', sigma=ins.scope_V, ask='scala verticale [V/div]'),
+    # Field('vo', 'V', sigma=ins.scope_V, ask='scala CH2 [V/div]', label='uscita, picco-picco, CH2'),
 ]
+PLAN = [1, 2, 3, 4, 5]
 
 
 def analyze():

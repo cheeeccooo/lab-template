@@ -48,13 +48,19 @@ class Field:
             f(valore)       -> incertezza calcolata dal valore
             f(valore, x)    -> come sopra, con un parametro x letto insieme al valore
     ask   : testo con cui chiedere x (es. 'scala verticale [V/div]')
+    label : cosa è la grandezza, in poche parole (es. 'ingresso, picco-picco, CH1'):
+            compare quando si inserisce e nell'intestazione del file
 
     Nel file si salvano solo le letture e i parametri: l'incertezza si calcola a ogni
     caricamento, quindi cambiare una funzione di instruments.py aggiorna tutti i dati.
     """
 
-    def __init__(self, name, unit='', sigma=None, ask=None):
-        self.name, self.unit, self.sigma, self.ask = name, unit, sigma, ask
+    def __init__(self, name, unit='', sigma=None, ask=None, label=''):
+        self.name, self.unit, self.sigma, self.ask, self.label = name, unit, sigma, ask, label
+
+    def prompt(self):
+        text = self.name + (f" — {self.label}" if self.label else '')
+        return f"{text} [{self.unit}]" if self.unit else text
 
     def error(self, value, par=None):
         if self.sigma is None:
@@ -87,6 +93,9 @@ def init_data(filename, fields, title=''):
             f.write(f"# {title}\n")
         f.write("# Solo letture, separate da TAB (p_ = parametro della lettura, es. scala)."
                 " Per escludere una misura: '#!' a inizio riga e il motivo in fondo.\n")
+        for fl in fields:
+            if fl.label:
+                f.write(f"#   {fl.name}: {fl.label}" + (f"; p_{fl.name}: {fl.ask}" if fl.ask else '') + "\n")
         f.write("# " + "\t".join(_columns(fields)) + "\n")
 
 
@@ -183,63 +192,162 @@ def load_table(filename, usecols=None, delimiter=None):
     return np.array([r for r in rows if len(r) == n])
 
 
-def _ask_row(fields):
-    """Chiede una riga. Restituisce (valori da salvare, testo di riepilogo con le incertezze)."""
-    def ask(text):
-        return float(input(f"  {text}: ").replace(',', '.'))
+DRAFT_DIR = os.path.join(DATA_DIR, '.bozza')
 
+
+class _Interrupted(Exception):
+    """Ctrl+C a metà riga: porta con sé i valori già inseriti."""
+
+    def __init__(self, done):
+        self.done = done
+
+
+def _draft_path(filename):
+    return os.path.join(DRAFT_DIR, filename + '.json')
+
+
+def _save_draft(filename, done):
+    import json
+    os.makedirs(DRAFT_DIR, exist_ok=True)
+    with open(_draft_path(filename), 'w') as f:
+        json.dump(done, f)
+
+
+def _take_draft(filename, fields):
+    """Riga interrotta in sospeso: la mostra e chiede se riprenderla. Restituisce i valori o []."""
+    import json
+    path = _draft_path(filename)
+    if not os.path.isfile(path):
+        return []
+    with open(path) as f:
+        done = json.load(f)
+    os.remove(path)
+    shown = ",  ".join(f"{fl.name} = {v:g}" for fl, (v, _) in zip(fields, done))
+    nxt = fields[len(done)].name if len(done) < len(fields) else 'conferma'
+    if input(f"  Riga interrotta: {shown}. Riprendere da {nxt}? (s/n): ").strip().lower() == 's':
+        return done
+    return []
+
+
+def _ask_row(fields, done=None, first_default=None):
+    """Chiede una riga, ripartendo dai valori già inseriti in `done` (lista di (valore, parametro)).
+    Restituisce (valori da salvare, riepilogo con le incertezze). Ctrl+C -> _Interrupted."""
+    def ask(text, default=None):
+        hint = f" (invio = {default:g})" if default is not None else ''
+        r = input(f"  {text}{hint}: ").strip()
+        if not r and default is not None:
+            return float(default)
+        return float(r.replace(',', '.'))
+
+    done = list(done or [])
+    try:
+        for k, f in enumerate(fields):
+            if k < len(done):
+                continue
+            v = ask(f.prompt(), first_default if k == 0 else None)
+            p = ask('  ' + f.ask) if f.ask else None
+            done.append((v, p))
+    except (KeyboardInterrupt, EOFError):
+        raise _Interrupted(done)
     row, summary = [], []
-    for f in fields:
-        label = f"{f.name} [{f.unit}]" if f.unit else f.name
-        v = ask(label)
-        p = ask('  ' + f.ask) if f.ask else None
+    for f, (v, p) in zip(fields, done):
         row += [v] if p is None else [v, p]
         s = f.error(v, p)
         summary.append(f"{f.name} = {v:g}" + (f" ± {s:.2g}" if s is not None else ''))
-    return row, ",  ".join(summary)
+    return row, ",  ".join(summary), done
 
 
-def insert(filename, fields):
-    """Inserimento interattivo: chiede le letture, mostra le incertezze, aggiunge la riga."""
-    print(f"\nInserimento in {filename}. Ctrl+C per finire.")
-    while True:
+def _interrupted(filename, done):
+    """Ctrl+C: se la riga era iniziata chiede se tenerla in sospeso per riprenderla da lì."""
+    print()
+    if done:
         try:
-            row, summary = _ask_row(fields)
-            print("  -> " + summary)
-            if input("  Salvare? (s/n): ").strip().lower() == 's':
-                _snapshot(filename)
-                with open(_path(filename), 'a') as fh:
-                    fh.write("\t".join(f"{x:.10g}" for x in row) + "\n")
+            keep = input("  Riga a metà: tenere i valori inseriti e riprendere da qui la prossima volta? (s/n): ")
         except (KeyboardInterrupt, EOFError):
-            print()
+            keep = 'n'
+        if keep.strip().lower() == 's':
+            _save_draft(filename, done)
+            print("  Riga in sospeso salvata.")
+
+
+def _remaining(filename, fields, plan):
+    """Punti previsti (valori del primo campo) non ancora presenti nel file."""
+    if not plan:
+        return []
+    try:
+        have = nom(load(filename, fields)[fields[0].name])
+    except LabError:
+        have = []
+    return [x for x in plan if not any(abs(h - x) <= 1e-9 * max(abs(x), 1) for h in have)]
+
+
+def insert(filename, fields, plan=None):
+    """Inserimento interattivo: chiede le letture, mostra le incertezze, aggiunge la riga.
+
+    plan : valori previsti del primo campo (es. le frequenze di procedura.md): a ogni riga si
+           propone il primo non ancora misurato, che si accetta con invio.
+    Ctrl+C a metà riga chiede se tenerla in sospeso; alla ripresa si riparte da lì.
+    """
+    print(f"\nInserimento in {filename}. Ctrl+C per interrompere.")
+    done = _take_draft(filename, fields)
+    while True:
+        todo = _remaining(filename, fields, plan)
+        if plan:
+            if not todo and not done:
+                print("  Tutti i punti previsti sono inseriti.")
+            elif todo:
+                print(f"\n  Prossimo punto previsto: {fields[0].name} = {todo[0]:g}"
+                      f"  ({len(plan) - len(todo) + 1} di {len(plan)})")
+        try:
+            row, summary, done = _ask_row(fields, done, todo[0] if todo else None)
+            print("  -> " + summary)
+            ans = input("  Salvare? (s/n): ").strip().lower()
+        except _Interrupted as e:
+            _interrupted(filename, e.done)
+            return
+        except (KeyboardInterrupt, EOFError):
+            _interrupted(filename, done)
             return
         except (ValueError, LabError) as e:
             print(f"  Valore non valido ({e}). Riga scartata.")
+            done = []
+            continue
+        if ans == 's':
+            _snapshot(filename)
+            with open(_path(filename), 'a') as fh:
+                fh.write("\t".join(f"{x:.10g}" for x in row) + "\n")
+        done = []
 
 
 def insert_once(filename, fields, title=''):
     """Scheda a riga unica (es. valori dei componenti sul banco): chiede ogni campo una
-    volta e riscrive data/<filename>. Si rilegge con load_once()."""
+    volta e riscrive data/<filename>. Si rilegge con load_once(). Interrompibile come insert()."""
+    done = _take_draft(filename, fields)
+    if not done:
+        try:
+            old = load_once(filename, fields)
+            print(f"\n{filename} contiene già:")
+            for f in fields:
+                print(f"  {f.name} = {fmt(old[f.name])} {f.unit}".rstrip())
+            if input("Sovrascrivere? (s/n): ").strip().lower() != 's':
+                return
+        except LabError:
+            pass
+    print(f"\nInserimento in {filename}. Ctrl+C per interrompere.")
     try:
-        old = load_once(filename, fields)
-        print(f"\n{filename} contiene già:")
-        for f in fields:
-            print(f"  {f.name} = {fmt(old[f.name])} {f.unit}".rstrip())
-        if input("Sovrascrivere? (s/n): ").strip().lower() != 's':
-            return
-    except LabError:
-        pass
-    print(f"\nInserimento in {filename}.")
-    try:
-        row, summary = _ask_row(fields)
+        row, summary, done = _ask_row(fields, done)
+        print("  -> " + summary)
+        ans = input("  Salvare? (s/n): ").strip().lower()
+    except _Interrupted as e:
+        _interrupted(filename, e.done)
+        return
+    except (KeyboardInterrupt, EOFError):
+        _interrupted(filename, done)
+        return
     except (ValueError, LabError) as e:
         print(f"  Valore non valido ({e}). Nulla è stato salvato.")
         return
-    except (KeyboardInterrupt, EOFError):
-        print()
-        return
-    print("  -> " + summary)
-    if input("  Salvare? (s/n): ").strip().lower() != 's':
+    if ans != 's':
         return
     _snapshot(filename)
     if os.path.exists(_path(filename)):
