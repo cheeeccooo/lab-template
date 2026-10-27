@@ -7,7 +7,7 @@ Ricevi la consegna di un'esperienza in `docs/`. La leggi, chiedi all'utente ciò
 | Fase | Chi | Cosa |
 |---|---|---|
 | 1. Inizializzazione, a casa | `/lab:init` | applica il template; scrive `proposta.md` con domande e proposte |
-| 2. Setup, a casa | `/lab:setup` | legge le risposte, adatta `tools/` e `latex/`, scrive `procedura.md` |
+| 2. Setup, a casa | `/lab:setup` | legge le risposte, adatta `tools/` e `latex/`, scrive `procedura.md`, sposta la proposta accettata in `docs/` |
 | 3. Relazione senza dati, a casa | `/lab:relazione-init` | introduzione, scelte di progetto, apparato e procedura |
 | 4. Misure, al banco | utente | segue `procedura.md` e inserisce dal menu di `tools/main.py`: valori del banco, poi una parte alla volta |
 | 4b. Controllo, al banco | `/lab:check <parte>` | a fine parte, prima di smontare: analisi della parte e confronto con l'atteso |
@@ -33,7 +33,7 @@ Le skill sono nel template (`skills/`), non nel progetto: `/lab` ne dà una guid
 
 ```
 setup.yaml            scheda del setup: corso, autori, ambiente, preferenze, strumenti
-proposta.md           domande, proposte e risposte: registro delle scelte e dei loro motivi
+proposta.md           domande e proposte da rispondere; accettata, va in docs/proposta.md: registro delle scelte e dei loro motivi
 procedura.md          scaletta da seguire al banco, scritta da /lab:setup
 docs/                 consegna, manuali degli strumenti
 data/banco.txt        valori misurati una volta sola (componenti, impostazioni)
@@ -53,7 +53,7 @@ latex/snippets.tex    schemi di tabelle e figure da copiare
 
 - `part1.py` è un esempio: sostituiscilo. Una parte solo qualitativa ha `DATA = None`.
 - Le parti in `PARTS` e i campi in `FIELDS` seguono l'ordine in cui si lavora al banco.
-- Ogni campo ha un nome breve e una `label` che dice cosa è la lettura ("ingresso, picco-picco, CH1"); una parte con punti previsti (frequenze, tensioni) li dichiara in `PLAN`, e il menu li propone in ordine.
+- Ogni campo ha un nome breve e una `label` che dice cosa è la lettura ("ingresso, picco-picco, CH1"); una parte con punti previsti (frequenze, tensioni) li dichiara in `PLAN`: il menu ricorda il prossimo da misurare, ma ogni valore si scrive a mano.
 - Se serve una funzione generale che manca, aggiungila a `lab.py`.
 - `setup.yaml` è la fonte per autori, titolo, data e specifiche degli strumenti: `instruments.py` e `main.tex` devono coincidere con esso.
 - Dipendenze in `requirements.txt`.

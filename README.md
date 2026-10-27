@@ -50,9 +50,9 @@ A ogni nuovo terminale va riattivato l'ambiente: `source .venv/bin/activate` opp
 | Quando | Cosa | Cosa succede |
 |---|---|---|
 | a casa | `/lab:init` | template applicato; `proposta.md`: prima stesura della procedura con domande e proposte motivate |
-| a casa | rispondi in `proposta.md`, poi `/lab:setup` | risposte confermate; analisi e relazione predisposte; `procedura.md` pronta |
+| a casa | rispondi in `proposta.md`, poi `/lab:setup` | risposte confermate, proposta accettata spostata in `docs/`; analisi e relazione predisposte; `procedura.md` pronta |
 | a casa | `/lab:relazione-init` | parti della relazione che non dipendono dalle misure |
-| al banco | segui `procedura.md` e il menu | valori del banco, poi una parte alla volta; il menu propone i punti previsti in ordine |
+| al banco | segui `procedura.md` e il menu | valori del banco, poi una parte alla volta; il menu ricorda il prossimo punto previsto |
 | finita una parte | `/lab:check <parte>` | analisi della parte e confronto con l'atteso: dice se si può smontare |
 | se cambia qualcosa | `/lab:edit <modifica>` | la modifica applicata ad analisi, procedura e schemi; le misure non si toccano |
 | dopo le misure | `/lab:relazione` | analisi completa e resto della relazione |
@@ -96,7 +96,7 @@ relazione:
 
 ```
 setup.yaml       scheda del setup
-proposta.md      domande, proposte e risposte: registro delle scelte
+proposta.md      domande da rispondere; accettata, va in docs/ come registro delle scelte
 procedura.md     scaletta da seguire al banco, scritta da /lab:setup
 docs/            consegna e manuali (non versionati)
 data/            misure, un file per parte

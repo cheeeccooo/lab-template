@@ -11,7 +11,7 @@ description: >-
 
 Lavora nella cartella corrente (la cartella dell'esperienza). Segui `.claude/CLAUDE.md` del progetto (dopo averlo copiato) e le regole di `setup.yaml`.
 
-Se la cartella è già inizializzata (`.claude/CLAUDE.md` o `proposta.md` presenti), non rifare nulla: con `Stato: in attesa di risposte` rimanda a `/lab:setup`, con `Stato: confermata` a `/lab:edit`.
+Se la cartella è già inizializzata (`.claude/CLAUDE.md` presente), non rifare nulla: con `proposta.md` in attesa di risposte rimanda a `/lab:setup`; con `docs/proposta.md` accettata, a `/lab:edit`.
 
 ## Template
 

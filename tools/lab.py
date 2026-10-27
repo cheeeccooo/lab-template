@@ -229,22 +229,18 @@ def _take_draft(filename, fields):
     return []
 
 
-def _ask_row(fields, done=None, first_default=None):
+def _ask_row(fields, done=None):
     """Chiede una riga, ripartendo dai valori già inseriti in `done` (lista di (valore, parametro)).
     Restituisce (valori da salvare, riepilogo con le incertezze). Ctrl+C -> _Interrupted."""
-    def ask(text, default=None):
-        hint = f" (invio = {default:g})" if default is not None else ''
-        r = input(f"  {text}{hint}: ").strip()
-        if not r and default is not None:
-            return float(default)
-        return float(r.replace(',', '.'))
+    def ask(text):
+        return float(input(f"  {text}: ").replace(',', '.'))
 
     done = list(done or [])
     try:
         for k, f in enumerate(fields):
             if k < len(done):
                 continue
-            v = ask(f.prompt(), first_default if k == 0 else None)
+            v = ask(f.prompt())
             p = ask('  ' + f.ask) if f.ask else None
             done.append((v, p))
     except (KeyboardInterrupt, EOFError):
@@ -285,7 +281,7 @@ def insert(filename, fields, plan=None):
     """Inserimento interattivo: chiede le letture, mostra le incertezze, aggiunge la riga.
 
     plan : valori previsti del primo campo (es. le frequenze di procedura.md): a ogni riga si
-           propone il primo non ancora misurato, che si accetta con invio.
+           ricorda il primo non ancora misurato; il valore si scrive comunque a mano.
     Ctrl+C a metà riga chiede se tenerla in sospeso; alla ripresa si riparte da lì.
     """
     print(f"\nInserimento in {filename}. Ctrl+C per interrompere.")
@@ -299,7 +295,7 @@ def insert(filename, fields, plan=None):
                 print(f"\n  Prossimo punto previsto: {fields[0].name} = {todo[0]:g}"
                       f"  ({len(plan) - len(todo) + 1} di {len(plan)})")
         try:
-            row, summary, done = _ask_row(fields, done, todo[0] if todo else None)
+            row, summary, done = _ask_row(fields, done)
             print("  -> " + summary)
             ans = input("  Salvare? (s/n): ").strip().lower()
         except _Interrupted as e:

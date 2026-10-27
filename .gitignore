@@ -4,5 +4,6 @@ __pycache__/
 latex/build/
 docs/*
 !docs/.gitkeep
+!docs/proposta.md
 data/.undo/
 data/.bozza/

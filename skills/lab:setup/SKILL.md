@@ -13,9 +13,9 @@ Lavora nella cartella dell'esperienza. Segui `.claude/CLAUDE.md` del progetto e 
 
 | Stato | Cosa fare |
 |---|---|
-| nessun `proposta.md` | l'esperienza non è inizializzata: rimanda a `/lab:init` e fermati |
+| nessun `proposta.md` né `docs/proposta.md` | l'esperienza non è inizializzata: rimanda a `/lab:init` e fermati |
 | `proposta.md` con `Stato: in attesa di risposte` | procedi |
-| `proposta.md` con `Stato: confermata` | setup già fatto: per cambiare qualcosa rimanda a `/lab:edit` e fermati |
+| `docs/proposta.md` con `Stato: accettata` | setup già fatto: per cambiare qualcosa rimanda a `/lab:edit` e fermati |
 
 1. **Leggi le risposte.** Vuoto = proposta accettata. Una risposta ambigua, o che apre una scelta nuova, diventa una nuova domanda nel file, nello stesso punto: lascia `Stato: in attesa di risposte`, di' all'utente cosa manca, che rilanci `/lab:setup`, e fermati. Le domande già risposte non si ripetono.
 2. **Quando tutto è risposto**, applica (e scrivi `procedura.md` con lo stesso stile di `proposta.md`: matematica in `$...$`, valori in tabella):
@@ -25,5 +25,5 @@ Lavora nella cartella dell'esperienza. Segui `.claude/CLAUDE.md` del progetto e 
    - `latex/`: struttura scelta in `setup.yaml`, titolo, data, autori, pacchetti richiesti dalle `preferenze`, schemi dei circuiti;
    - `procedura.md`: la sezione "Procedura" di `proposta.md` con le risposte incorporate e senza domande; tempi stimati e riquadri "Alla fine hai" aggiornati alle scelte confermate.
 3. **Verifica**: con dati inventati controlla che l'analisi giri nell'ambiente di `setup.yaml` e che `latexmk` compili; poi cancella dati di prova e risultati generati.
-4. **Chiudi**: in `proposta.md` scrivi `Stato: confermata (GG/MM/AAAA)` e lasciala com'è (è il registro delle scelte e dei loro motivi, usato dalla relazione). Commit `Setup: <titolo>`.
+4. **Chiudi**: in `proposta.md` scrivi `Stato: accettata (GG/MM/AAAA)` e spostala in `docs/proposta.md` (`git mv`): non serve più al banco, resta come registro delle scelte e dei loro motivi per la relazione. Commit `Setup: <titolo>`.
 5. **Di' all'utente** che si parte da `procedura.md`, che a fine di ogni parte si lancia `/lab:check <parte>`, e che, se vuole, `/lab:relazione-init` scrive ora le parti della relazione che non dipendono dalle misure.

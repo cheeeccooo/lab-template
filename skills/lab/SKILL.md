@@ -20,7 +20,7 @@ Si lanciano dalla cartella dell'esperienza, in quest'ordine:
 | Quando | Skill | Cosa fa |
 |---|---|---|
 | a casa, cartella con solo il materiale | `/lab:init` | applica il template, legge la consegna e scrive `proposta.md`: prima stesura della procedura, con domande e proposte motivate |
-| a casa, dopo aver risposto in `proposta.md` | `/lab:setup` | conferma le risposte, prepara analisi e relazione, scrive `procedura.md` |
+| a casa, dopo aver risposto in `proposta.md` | `/lab:setup` | conferma le risposte, prepara analisi e relazione, scrive `procedura.md`; la proposta accettata va in `docs/` |
 | a casa, se vuoi | `/lab:relazione-init` | scrive le parti della relazione che non dipendono dalle misure |
 | al banco | menu `python tools/main.py` | segui `procedura.md`: valori del banco, misure, `u` annulla, analisi; `Ctrl+C` interrompe e la riga a metà si riprende dopo |
 | al banco, finita una parte | `/lab:check <parte>` | analisi della parte e confronto con l'atteso ricalcolato dai valori misurati: dice se si può smontare |
