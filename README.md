@@ -1,51 +1,80 @@
 # Template di laboratorio
 
-Punto di partenza per un'esperienza di laboratorio di fisica: analisi dati in Python e relazione in LaTeX, con un agente di programmazione che legge la consegna e adatta il progetto.
+Esperienze di laboratorio di fisica, dalla consegna alla relazione: analisi dati in Python e relazione in LaTeX, preparate da un agente di programmazione ([Claude Code](https://claude.com/claude-code)).
 
-## Requisiti
+Tu porti in laboratorio la consegna; l'agente la legge, ti prepara la procedura da seguire al banco, calcola le incertezze dalle specifiche degli strumenti, fa i grafici e scrive la relazione con le regole del tuo corso.
 
-- **Python 3** in un ambiente virtuale (`venv` o conda), non quello di sistema.
-- **TeX Live** con `latexmk`.
-- **Un agente di programmazione.** Il template è predisposto per [Claude Code](https://claude.com/claude-code), con le skill in `skills/`; con un altro agente vedi [Altri agenti](#altri-agenti).
+## Guida rapida
 
-## Installazione
+Funziona su macOS e Linux. Su Windows serve [WSL](https://learn.microsoft.com/windows/wsl/install).
 
-Una volta sola. Le skill (`/lab`, `/lab:init`, …) si collegano tra le skill utente di Claude Code:
+### 1. Installa i programmi (una volta sola)
+
+| Programma | A cosa serve | Dove si scarica |
+|---|---|---|
+| Python 3 | analisi dei dati | [python.org](https://www.python.org/downloads/) |
+| TeX Live (o MacTeX su Mac) | relazione in PDF | [tug.org/texlive](https://tug.org/texlive/) · [tug.org/mactex](https://tug.org/mactex/) |
+| Claude Code | l'agente che fa il lavoro | [claude.com/claude-code](https://claude.com/claude-code) |
+| Git | scaricare il template | già presente su Mac e Linux; altrimenti [git-scm.com](https://git-scm.com/) |
+
+### 2. Scarica il template e attiva le skill (una volta sola)
+
+Apri il Terminale e incolla:
 
 ```sh
+git clone https://github.com/UTENTE/REPO.git ~/lab-template
+cd ~/lab-template
 ./skills/install.sh
-```
-
-Sono collegamenti alla cartella `skills/` del template: modificarle qui le aggiorna ovunque, e non vengono copiate nelle esperienze.
-
-Python, con `venv` dalla cartella dell'esperienza:
-
-```sh
-python3 -m venv .venv
-source .venv/bin/activate
+python3 -m venv ~/.venv-lab
+source ~/.venv-lab/bin/activate
 pip install -r requirements.txt
 ```
 
-Con conda, un ambiente riusabile per tutte le esperienze:
+- `install.sh` rende disponibili in Claude Code i comandi `/lab`, `/lab:init`, `/lab:setup`, …
+- `~/.venv-lab` è l'ambiente Python usato da tutte le esperienze: il Python di sistema resta pulito.
+- Non spostare né cancellare `~/lab-template`: i comandi lo usano ogni volta.
 
-```sh
-conda create -n lab python
-conda activate lab
-pip install -r requirements.txt
+### 3. Prepara le cartelle
+
+Una cartella per il corso, dentro una cartella per ogni esperienza:
+
+```
+Laboratorio/          cartella del corso
+├── setup.yaml        scheda del corso: la crea /lab:init la prima volta
+├── E1/               un'esperienza: dentro metti solo la consegna e i datasheet
+└── E2/
 ```
 
-A ogni nuovo terminale va riattivato l'ambiente: `source .venv/bin/activate` oppure `conda activate lab`.
+### 4. Prima di andare in laboratorio
 
-## Nuova esperienza
+```sh
+cd Laboratorio/E1
+claude
+```
 
-1. Crea la cartella dell'esperienza e mettici solo il materiale: consegna, datasheet, manuali.
-2. Se hai la scheda del corso, tienila nella cartella superiore (`../setup.yaml`).
-3. Apri Claude Code nella cartella e lancia `/lab:init`: applica il template e scrive `proposta.md`.
-4. Rispondi in `proposta.md` (dopo **Risposta:**; vuoto = accetto la proposta) e lancia `/lab:setup`.
+In Claude Code:
 
-`/lab` mostra in breve tutti i passi.
+1. scrivi `/lab:init`: prepara la cartella e scrive `proposta.md`, con la procedura e alcune domande;
+2. apri `proposta.md` e rispondi accanto a **Risposta:** (vuoto = va bene la proposta);
+3. scrivi `/lab:setup`: prepara tutto e scrive `procedura.md`, la scaletta per il banco.
 
-## Flusso
+La prima volta ti chiede autori, matricole e strumenti del corso, e li salva in `../setup.yaml` per le esperienze successive.
+
+### 5. In laboratorio e dopo
+
+```sh
+source ~/.venv-lab/bin/activate
+python tools/main.py
+```
+
+1. Segui `procedura.md` e inserisci le misure dal menu; `u` annulla l'ultima, `Ctrl+C` interrompe e poi si riprende da lì.
+2. Finita una parte, in Claude Code: `/lab:check 1` (2, 3, …) ti dice se puoi smontare.
+3. Finite le misure: `/lab:relazione`, poi `/lab:chiudi`.
+4. Il PDF si compila con `latexmk` e si trova in `latex/build/`.
+
+`/lab` in Claude Code riassume tutti i passi.
+
+## Tutti i comandi
 
 | Quando | Cosa | Cosa succede |
 |---|---|---|
@@ -63,7 +92,7 @@ A ogni nuovo terminale va riattivato l'ambiente: `source .venv/bin/activate` opp
 Dalla cartella dell'esperienza:
 
 ```sh
-source .venv/bin/activate     # oppure: conda activate lab
+source ~/.venv-lab/bin/activate
 python tools/main.py          # menu: valori del banco, misure, annulla, analisi
 python tools/main.py all      # tutte le analisi, senza finestre
 latexmk                       # compila la relazione -> latex/build/<nome>.pdf
@@ -76,7 +105,7 @@ Scheda breve in YAML, creata da `/lab:init` la prima volta e pensata per essere 
 ```yaml
 autori:
   - Nome Cognome, 1234567
-python: conda activate lab
+python: source ~/.venv-lab/bin/activate
 preferenze:
   - relazione senza teoria
   - circuiti disegnati con circuitikz
@@ -137,7 +166,7 @@ Istruzioni e skill sono file di testo e non dipendono da Claude. Con un altro ag
 ## Errori comuni
 
 **`ModuleNotFoundError: No module named 'uncertainties'`**
-L'ambiente virtuale non è attivo, o i pacchetti non ci sono: attivalo e ripeti `pip install -r requirements.txt`.
+L'ambiente Python non è attivo: `source ~/.venv-lab/bin/activate`. Se l'errore resta, ripeti `pip install -r requirements.txt` dalla cartella del template.
 
 **`biber: extracting arm64 binary with lipo failed`** (macOS recenti, Apple Silicon, solo con la bibliografia attiva)
 Il `biber` di TeX Live non riesce a estrarre la propria parte arm64. Estrarla a mano in una cartella che precede TeX Live nel `PATH`:
@@ -156,3 +185,9 @@ Cancella `latex/build/` e ricompila.
 
 **`dataN.txt: attese N colonne, trovate M`**
 Una riga del file dati non corrisponde ai `FIELDS` della parte: correggi la riga, o rigenera il file se i campi sono cambiati.
+
+**`/lab:init` non esiste in Claude Code**
+Le skill non sono collegate: dalla cartella del template lancia `./skills/install.sh` e riapri Claude Code.
+
+**Preferisco conda a venv**
+Va bene anche un ambiente conda al posto di `~/.venv-lab`: crealo con `conda create -n lab python`, attivalo con `conda activate lab` e scrivi quel comando nella voce `python` di `setup.yaml`.

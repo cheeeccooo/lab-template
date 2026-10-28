@@ -1,0 +1,38 @@
+# Formato di setup.yaml, la scheda del corso. Si modifica a mano; dopo una modifica: /lab:edit.
+# Regole:
+# - solo ciò che non cambia da un'esperienza all'altra, più titolo e data dell'esperienza;
+# - una riga per valore, commenti brevi solo dove il valore non si capisce da solo;
+# - ogni strumento ha la sua fonte; un valore sconosciuto si scrive TODO, non si inventa;
+# - in strumenti solo ciò che entra in un conto: specifiche di incertezza, impedenze, bande;
+# - in preferenze ogni indicazione stabile su come lavorare (richieste del docente, stile,
+#   pacchetti da usare); scadenze e logistica no;
+# - i valori della singola esperienza (componenti misurati, progetto, riferimenti) non stanno
+#   qui ma in tools/config.py.
+
+corso:   NOME DEL CORSO
+gruppo:  SIGLA                  # se il corso la usa, es. Mar03
+autori:                         # Nome Cognome, matricola
+  - Nome Cognome, 1234567
+python:  source ~/.venv-lab/bin/activate      # oppure: conda activate NOME
+
+preferenze:                     # una per riga
+  - relazione concisa
+
+relazione:
+  struttura: sezioni            # sezioni | per parte
+  pdf: main                     # nome del PDF prodotto da latexmk
+
+esperienza:
+  titolo: "..."
+  data: GG/MM/AAAA
+
+strumenti:                      # incertezze dal manuale del modello esatto
+  oscilloscopio:
+    modello: MARCA MODELLO
+    fonte: "titolo del documento — link"     # oppure docs/FILE.pdf
+    V: 0.28 div
+    t: 0.016 div
+  multimetro:
+    modello: MARCA MODELLO
+    fonte: TODO
+    V_dc: 0.5 % + 3 digit

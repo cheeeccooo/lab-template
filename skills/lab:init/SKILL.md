@@ -22,10 +22,10 @@ Il template è la cartella che contiene questa skill, due livelli sopra: `realpa
 1. **Controlla** che la cartella contenga solo il materiale dell'esperienza. Se ci sono file che sembrano di un progetto (`tools/`, `latex/`, `.git/`), fermati e chiedi.
 2. **Applica il template**:
    - sposta il materiale in `docs/` con nomi brevi e leggibili (`guida_E2.pdf`, `KSP2222A.pdf`);
-   - copia il template senza la sua storia e senza le skill: `rsync -a --exclude .git --exclude skills --exclude .DS_Store "<template>/" ./`;
+   - copia il template senza la sua storia e senza le skill: `rsync -a --exclude .git --exclude skills --exclude .venv --exclude .DS_Store "<template>/" ./`;
    - `git init -b main` e primo commit `Init: materiale e template`.
 3. **Leggi la consegna** e tutto `docs/`.
-4. **setup.yaml**: copia `../setup.yaml` se esiste. Compila ciò che si deduce: titolo, nome del PDF secondo la convenzione del corso, strumenti nuovi citati dalla consegna. Le specifiche mancanti: cercale nei documenti in `docs/`, poi in rete; ogni specifica ha la sua `fonte`, e quelle prese dalla rete si segnalano nella proposta. Non inventare: ciò che non trovi diventa una domanda.
+4. **setup.yaml** (formato e regole in `setup-formato.yaml`, accanto a questa skill): copia `../setup.yaml` se esiste; altrimenti è la prima esperienza del corso: le domande su corso, autori con matricola, ambiente Python (di norma `source ~/.venv-lab/bin/activate`) e strumenti vanno nella proposta, e la scheda si salva anche in `../setup.yaml`. Compila ciò che si deduce: titolo, nome del PDF secondo la convenzione del corso, strumenti nuovi citati dalla consegna. Le specifiche mancanti: cercale nei documenti in `docs/`, poi in rete; ogni specifica ha la sua `fonte`, e quelle prese dalla rete si segnalano nella proposta. Non inventare: ciò che non trovi diventa una domanda.
 5. **Scrivi `proposta.md`** (formato sotto), fai un commit e fermati. Di' all'utente: rispondi nel file, poi lancia `/lab:setup`.
 
 ## Formato di proposta.md
