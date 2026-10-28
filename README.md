@@ -22,7 +22,7 @@ Funziona su macOS e Linux. Su Windows serve [WSL](https://learn.microsoft.com/wi
 Apri il Terminale e incolla:
 
 ```sh
-git clone https://github.com/UTENTE/REPO.git ~/lab-template
+git clone https://github.com/cheeeccooo/lab-template.git ~/lab-template
 cd ~/lab-template
 ./skills/install.sh
 python3 -m venv ~/.venv-lab
@@ -191,3 +191,7 @@ Le skill non sono collegate: dalla cartella del template lancia `./skills/instal
 
 **Preferisco conda a venv**
 Va bene anche un ambiente conda al posto di `~/.venv-lab`: crealo con `conda create -n lab python`, attivalo con `conda activate lab` e scrivi quel comando nella voce `python` di `setup.yaml`.
+
+## Licenza
+
+MIT: vedi [LICENSE](LICENSE).
